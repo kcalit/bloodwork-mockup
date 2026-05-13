@@ -4,434 +4,505 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kcal Longevity — Blood Panel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #144735;
-    --green-light: #1a5c46;
-    --mint: #A3DAD6;
-    --mint-bg: #f0faf9;
+    --bg: #0f1117;
+    --bg2: #161b24;
+    --bg3: #1e2535;
+    --card: #1a2030;
+    --card2: #212840;
+    --border: rgba(255,255,255,0.07);
+    --green: #A3DAD6;
+    --green-bright: #5cc8c2;
+    --green-dark: #144735;
+    --green-glow: rgba(163,218,214,0.18);
     --white: #ffffff;
-    --near-black: #282829;
-    --grey: #D1D3D4;
-    --grey-mid: #9ca3af;
-    --grey-light: #f5f5f5;
-    --review: #dc2626;
-    --review-bg: #fef2f2;
-    --radius: 16px;
-    --radius-sm: 10px;
-    --shadow: 0 2px 12px rgba(20,71,53,0.08);
-    --shadow-md: 0 4px 24px rgba(20,71,53,0.12);
+    --off-white: #e8edf5;
+    --muted: #6b7a99;
+    --muted2: #8892aa;
+    --improved: #A3DAD6;
+    --stable: #6b7a99;
+    --review: #ff5c5c;
+    --review-bg: rgba(255,92,92,0.1);
+    --review-glow: rgba(255,92,92,0.2);
+    --gold: #f0c060;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --shadow-green: 0 0 24px rgba(163,218,214,0.15);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito', sans-serif; background: var(--grey-light); color: var(--near-black); min-height: 100vh; display: flex; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--off-white); min-height: 100vh; }
 
-  /* Sidebar */
-  .sidebar { width: 72px; background: var(--green); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 4px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
-  .sidebar-logo { width: 40px; height: 40px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-  .nav-item { width: 48px; height: 48px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 3px; color: rgba(255,255,255,0.55); font-size: 9px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; transition: all 0.2s; border: none; background: transparent; font-family: 'Nunito', sans-serif; }
-  .nav-item:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
-  .nav-item.active { background: rgba(255,255,255,0.15); color: var(--white); }
-  .nav-item svg { width: 20px; height: 20px; }
+  /* ── LAYOUT ── */
+  .app { display: flex; min-height: 100vh; }
+  .sidebar { width: 72px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 6px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+  .sidebar-logo { width: 42px; height: 42px; background: var(--green-dark); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: var(--shadow-green); }
+  .nav-btn { width: 48px; height: 48px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; transition: all 0.2s; border: none; background: transparent; font-family: 'Nunito', sans-serif; cursor: pointer; }
+  .nav-btn svg { width: 20px; height: 20px; }
+  .nav-btn:hover { background: rgba(163,218,214,0.08); color: var(--green); }
+  .nav-btn.active { background: rgba(163,218,214,0.12); color: var(--green); }
+  .main { margin-left: 72px; flex: 1; display: flex; flex-direction: column; }
 
-  /* Main */
-  .main { margin-left: 72px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+  /* ── TOPBAR ── */
+  .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-title { font-size: 15px; font-weight: 800; color: var(--white); }
+  .topbar-pill { background: rgba(163,218,214,0.12); color: var(--green); font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn-ghost { background: transparent; color: var(--muted2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+  .btn-solid { background: var(--green-dark); color: var(--white); border: none; border-radius: 8px; padding: 8px 16px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; box-shadow: 0 0 16px rgba(20,71,53,0.4); }
+  .btn-solid:hover { background: #1a5c46; }
 
-  /* Topbar */
-  .topbar { background: var(--white); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--grey); position: sticky; top: 0; z-index: 50; }
-  .topbar-title { font-size: 20px; font-weight: 800; color: var(--green); }
-  .topbar-subtitle { font-size: 13px; color: var(--grey-mid); }
-  .topbar-right { display: flex; align-items: center; gap: 12px; }
-  .btn-primary { background: var(--green); color: var(--white); border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.2s; }
-  .btn-primary:hover { background: var(--green-light); }
-  .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
-  .btn-outline:hover { background: var(--mint-bg); }
-
-  .content { padding: 28px 32px; flex: 1; }
+  /* ── SCREENS ── */
+  .content { padding: 28px 32px; }
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* Summary tiles */
-  .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .summary-tile { background: var(--white); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); border-top: 4px solid var(--mint); }
-  .summary-tile.hl { border-top-color: var(--green); }
-  .tile-sys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--grey-mid); margin-bottom: 8px; }
-  .tile-nums { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
-  .tile-big { font-size: 32px; font-weight: 800; color: var(--green); }
-  .tile-of { font-size: 14px; color: var(--grey-mid); }
-  .tile-lbl { font-size: 12px; font-weight: 700; }
-  .tile-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-  .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
-  .bi { background: var(--mint-bg); color: var(--green); }
-  .bs { background: #f3f4f6; color: var(--grey-mid); }
+  /* ── HERO RINGS ── */
+  .hero { display: flex; gap: 0; justify-content: center; align-items: center; padding: 32px 0 40px; }
+  .ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; flex: 1; max-width: 200px; cursor: pointer; }
+  .ring-wrap:hover .ring-svg circle.track-fill { filter: brightness(1.2); }
+  .ring-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .ring-label-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .ring-svg { width: 130px; height: 130px; transform: rotate(-90deg); }
+  .ring-svg circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+  .ring-svg circle.track-bg { stroke: rgba(255,255,255,0.06); }
+  .ring-svg circle.track-fill { transition: stroke-dashoffset 1s ease; }
+  .ring-center { position: relative; }
+  .ring-container { position: relative; width: 130px; height: 130px; }
+  .ring-inner-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
+  .ring-val { font-size: 28px; font-weight: 900; color: var(--white); line-height: 1; }
+  .ring-unit { font-size: 11px; color: var(--muted2); font-weight: 600; margin-top: 2px; }
+  .ring-divider { width: 1px; height: 80px; background: var(--border); margin: 0 8px; align-self: center; }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+  .sum-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .sum-card:hover { border-color: rgba(163,218,214,0.3); box-shadow: var(--shadow-green); }
+  .sum-sys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 10px; }
+  .sum-nums { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
+  .sum-big { font-size: 36px; font-weight: 900; color: var(--white); }
+  .sum-of { font-size: 14px; color: var(--muted); }
+  .sum-lbl { font-size: 12px; color: var(--muted2); margin-bottom: 10px; }
+  .sum-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .sum-bar-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 1s ease; }
+  .sum-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+  .bi { background: rgba(163,218,214,0.12); color: var(--green); }
+  .bs { background: rgba(107,122,153,0.15); color: var(--muted2); }
   .br { background: var(--review-bg); color: var(--review); }
 
-  /* Overall banner */
-  .overall-banner { background: var(--green); color: var(--white); border-radius: var(--radius); padding: 20px 28px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; }
-  .banner-left { display: flex; align-items: center; gap: 16px; }
-  .banner-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-  .banner-big { font-size: 24px; font-weight: 800; }
-  .banner-sub { font-size: 13px; opacity: 0.8; margin-top: 2px; }
-  .banner-right { display: flex; gap: 24px; }
-  .bstat { text-align: center; }
-  .bstat-n { font-size: 22px; font-weight: 800; }
-  .bstat-l { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+  /* ── SECTION HEADING ── */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); white-space: nowrap; }
+  .sec-count { font-size: 10px; font-weight: 700; background: rgba(163,218,214,0.1); color: var(--green); padding: 2px 8px; border-radius: 20px; }
 
-  /* Section heading */
-  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; margin-top: 28px; }
-  .sec-title { font-size: 15px; font-weight: 800; color: var(--green); }
-  .sec-desc { font-size: 12px; color: var(--grey-mid); }
-
-  /* Marker grid */
-  .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 8px; }
-  .mcard { background: var(--white); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; border-left: 4px solid transparent; }
-  .mcard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-  .mcard.si { border-left-color: var(--green); }
-  .mcard.ss { border-left-color: var(--grey); }
-  .mcard.sr { border-left-color: var(--review); }
-  .mcard.tsh { border-left-color: var(--review); background: var(--review-bg); }
-  .ctop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .clbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); }
-  .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
-  .di { background: var(--green); }
-  .ds { background: var(--grey-mid); }
-  .dr { background: var(--review); }
-  .cvrow { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
-  .cval { font-size: 26px; font-weight: 800; }
-  .cunit { font-size: 12px; color: var(--grey-mid); font-weight: 600; }
-  .cchg { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: auto; }
-  .ci { background: var(--mint-bg); color: var(--green); }
-  .cr { background: var(--review-bg); color: var(--review); }
-  .cs { background: #f3f4f6; color: var(--grey-mid); }
-
-  /* Range bar */
-  .rbar { margin-top: 10px; }
-  .rlbls { display: flex; justify-content: space-between; font-size: 10px; color: var(--grey-mid); margin-bottom: 4px; }
-  .rtrack { height: 6px; background: #e5e7eb; border-radius: 3px; position: relative; overflow: visible; }
-  .ropt { position: absolute; top: 0; height: 100%; background: var(--mint); border-radius: 3px; }
-  .rm { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--green); border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.2); transform: translateX(-50%); z-index: 2; }
-  .rm.d0 { background: var(--grey-mid); }
-  .rleg { display: flex; gap: 12px; margin-top: 6px; }
-  .rli { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--grey-mid); }
-  .ldot { width: 8px; height: 8px; border-radius: 50%; }
+  /* ── MARKER ROWS (Whoop list style) ── */
+  .marker-list { display: flex; flex-direction: column; gap: 2px; }
+  .mrow { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; display: grid; grid-template-columns: 200px 1fr 120px 100px; align-items: center; gap: 16px; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+  .mrow:hover { background: var(--card2); border-color: rgba(163,218,214,0.2); }
+  .mrow.review { border-left: 3px solid var(--review); }
+  .mrow.improved { border-left: 3px solid var(--green); }
+  .mrow.stable { border-left: 3px solid var(--muted); }
+  .mrow-name { font-size: 13px; font-weight: 700; color: var(--white); }
+  .mrow-sys { font-size: 10px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+  .mrow-bar-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .mrow-bar-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--muted); }
+  .mrow-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; position: relative; overflow: visible; }
+  .mrow-opt { position: absolute; top: 0; height: 100%; background: rgba(163,218,214,0.2); border-radius: 3px; }
+  .mrow-d0 { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--muted); border: 2px solid var(--bg); transform: translateX(-50%); z-index: 1; }
+  .mrow-d90 { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--green); border: 2px solid var(--bg); transform: translateX(-50%); z-index: 2; box-shadow: 0 0 8px rgba(163,218,214,0.5); }
+  .mrow-d90.review { background: var(--review); box-shadow: 0 0 8px rgba(255,92,92,0.5); }
+  .mrow-val-block { text-align: right; }
+  .mrow-val { font-size: 20px; font-weight: 900; color: var(--white); }
+  .mrow-unit { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .mrow-chg { text-align: right; }
+  .mrow-chg-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: inline-block; }
+  .chg-i { background: rgba(163,218,214,0.12); color: var(--green); }
+  .chg-s { background: rgba(107,122,153,0.12); color: var(--muted2); }
+  .chg-r { background: var(--review-bg); color: var(--review); }
 
   /* TSH alert */
-  .tsh-banner { background: var(--review-bg); border: 1px solid #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--review); font-weight: 700; margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+  .tsh-flag { display: flex; align-items: center; gap: 8px; background: var(--review-bg); border: 1px solid rgba(255,92,92,0.3); border-radius: 8px; padding: 8px 12px; font-size: 11px; color: var(--review); font-weight: 700; margin-top: 8px; grid-column: 1 / -1; }
 
-  /* Derived */
-  .dgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 8px; }
-  .dcard { background: var(--mint-bg); border-radius: var(--radius-sm); padding: 18px 20px; border: 1px solid var(--mint); }
-  .dlbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--green); margin-bottom: 6px; }
-  .dval { font-size: 28px; font-weight: 800; color: var(--green); }
-  .dunit { font-size: 12px; color: var(--grey-mid); font-weight: 600; margin-left: 4px; }
-  .dtgt { font-size: 11px; color: var(--grey-mid); margin-top: 4px; }
-  .dint { font-size: 11px; color: var(--near-black); margin-top: 6px; line-height: 1.5; }
+  /* ── DERIVED METRICS ── */
+  .derived-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .dcard { background: var(--card); border: 1px solid rgba(163,218,214,0.15); border-radius: var(--radius-sm); padding: 22px 24px; }
+  .dcard-lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--green); margin-bottom: 8px; }
+  .dcard-val { font-size: 36px; font-weight: 900; color: var(--white); }
+  .dcard-unit { font-size: 12px; color: var(--muted); font-weight: 600; margin-left: 4px; }
+  .dcard-tgt { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .dcard-desc { font-size: 12px; color: var(--muted2); margin-top: 8px; line-height: 1.6; }
 
-  /* Compare */
-  .cmp-hdr { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .cmp-card { background: var(--white); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); text-align: center; }
-  .cmp-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--grey-mid); margin-bottom: 6px; }
-  .cmp-date { font-size: 18px; font-weight: 800; color: var(--green); }
-  .cmp-sub { font-size: 12px; color: var(--grey-mid); }
+  /* ── COMPARE ── */
+  .cmp-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .cmp-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 24px; text-align: center; }
+  .cmp-panel-lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 6px; }
+  .cmp-panel-date { font-size: 18px; font-weight: 800; color: var(--white); }
+  .cmp-panel-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .ctbl-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
   .ctbl { width: 100%; border-collapse: collapse; }
-  .ctbl th { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--grey); }
+  .ctbl th { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg2); }
   .ctbl th:not(:first-child) { text-align: center; }
-  .ctbl td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .ctbl td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; color: var(--off-white); }
   .ctbl td:not(:first-child) { text-align: center; font-weight: 700; }
-  .ctbl tr:hover td { background: var(--grey-light); }
-  .csec td { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--green); background: var(--mint-bg) !important; padding: 6px 12px; }
+  .ctbl tr:hover td { background: rgba(255,255,255,0.02); }
+  .ctbl-sec td { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--green); background: rgba(163,218,214,0.05) !important; padding: 8px 16px; }
   .dgi { color: var(--green); }
   .dgr { color: var(--review); }
-  .dgs { color: var(--grey-mid); }
+  .dgs { color: var(--muted); }
 
-  /* Upload */
-  .upzone { background: var(--white); border: 2px dashed var(--mint); border-radius: var(--radius); padding: 60px 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 28px; }
-  .upzone:hover { border-color: var(--green); background: var(--mint-bg); }
-  .upicon { width: 64px; height: 64px; background: var(--mint-bg); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-  .uptitle { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 8px; }
-  .upsub { font-size: 13px; color: var(--grey-mid); margin-bottom: 20px; }
-  .upsteps { display: flex; gap: 0; margin-top: 24px; justify-content: center; }
-  .upstep { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; max-width: 160px; opacity: 0.4; transition: opacity 0.3s; }
+  /* ── UPLOAD ── */
+  .upzone { background: var(--card); border: 2px dashed rgba(163,218,214,0.25); border-radius: var(--radius); padding: 60px 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 28px; }
+  .upzone:hover { border-color: var(--green); background: rgba(163,218,214,0.04); }
+  .upzone-icon { width: 64px; height: 64px; background: rgba(163,218,214,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .upzone-title { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+  .upzone-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .upsteps { display: flex; justify-content: center; margin-top: 28px; gap: 0; }
+  .upstep { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; max-width: 140px; opacity: 0.35; transition: opacity 0.3s; }
   .upstep.active { opacity: 1; }
-  .stepn { width: 32px; height: 32px; border-radius: 50%; background: var(--mint-bg); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; border: 2px solid var(--mint); }
-  .upstep.active .stepn { background: var(--green); color: var(--white); border-color: var(--green); }
-  .steplbl { font-size: 11px; font-weight: 700; text-align: center; }
-  .stepcon { width: 40px; height: 2px; background: var(--grey); margin-top: 15px; }
-  .upitem { background: var(--white); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); margin-bottom: 10px; cursor: pointer; transition: box-shadow 0.2s; }
-  .upitem:hover { box-shadow: var(--shadow-md); }
-  .upficon { width: 40px; height: 40px; background: var(--mint-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .upfname { font-size: 14px; font-weight: 700; }
-  .upfmeta { font-size: 12px; color: var(--grey-mid); margin-top: 2px; }
-  .upfst { margin-left: auto; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: var(--mint-bg); color: var(--green); }
+  .stepn { width: 32px; height: 32px; border-radius: 50%; background: var(--bg3); color: var(--muted); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; border: 2px solid var(--border); }
+  .upstep.active .stepn { background: var(--green-dark); color: var(--white); border-color: var(--green); box-shadow: 0 0 12px rgba(163,218,214,0.3); }
+  .steplbl { font-size: 10px; font-weight: 700; color: var(--muted2); text-align: center; }
+  .stepcon { width: 40px; height: 2px; background: var(--border); margin-top: 15px; }
+  .uplist { display: flex; flex-direction: column; gap: 8px; }
+  .upitem { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: border-color 0.2s; }
+  .upitem:hover { border-color: rgba(163,218,214,0.25); }
+  .upitem-icon { width: 40px; height: 40px; background: rgba(163,218,214,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .upitem-name { font-size: 13px; font-weight: 700; color: var(--white); }
+  .upitem-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .upitem-badge { margin-left: auto; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; background: rgba(163,218,214,0.1); color: var(--green); }
 
-  /* Detail panel */
-  .doverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 200; display: none; align-items: center; justify-content: flex-end; }
+  /* ── DETAIL PANEL ── */
+  .doverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: flex-start; justify-content: flex-end; }
   .doverlay.open { display: flex; }
-  .dpanel { width: 420px; height: 100vh; background: var(--white); overflow-y: auto; padding: 32px 28px; box-shadow: -4px 0 32px rgba(0,0,0,0.15); position: relative; }
-  .dclose { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: var(--grey-light); border: none; cursor: pointer; font-size: 18px; color: var(--grey-mid); font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center; }
-  .dsys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--mint); margin-bottom: 6px; }
-  .dname { font-size: 22px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
-  .dfull { font-size: 13px; color: var(--grey-mid); margin-bottom: 20px; }
-  .dvblock { background: var(--mint-bg); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 20px; }
-  .dv { font-size: 48px; font-weight: 800; color: var(--green); }
-  .dvunit { font-size: 16px; color: var(--grey-mid); font-weight: 600; }
-  .dvchg { font-size: 13px; font-weight: 700; margin-top: 4px; color: var(--grey-mid); }
-  .dsect { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); margin-bottom: 8px; margin-top: 20px; }
-  .dtxt { font-size: 13px; line-height: 1.7; }
-  .dlever { background: var(--green); color: var(--white); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 12px; line-height: 1.6; margin-top: 8px; }
-  .dlevtitle { font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.7; margin-bottom: 4px; }
+  .dpanel { width: 440px; height: 100vh; background: var(--bg2); overflow-y: auto; padding: 32px 28px; border-left: 1px solid var(--border); position: relative; }
+  .dclose { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 16px; color: var(--muted); font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
+  .dclose:hover { color: var(--white); }
+  .dp-sys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--green); margin-bottom: 6px; }
+  .dp-name { font-size: 24px; font-weight: 900; color: var(--white); margin-bottom: 4px; }
+  .dp-full { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .dp-valblock { background: var(--card); border: 1px solid rgba(163,218,214,0.15); border-radius: var(--radius-sm); padding: 22px; margin-bottom: 24px; }
+  .dp-val { font-size: 52px; font-weight: 900; color: var(--white); line-height: 1; }
+  .dp-unit { font-size: 16px; color: var(--muted); font-weight: 600; }
+  .dp-chg { font-size: 13px; color: var(--muted2); margin-top: 6px; font-weight: 600; }
+  .dp-sect { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin: 20px 0 8px; }
+  .dp-txt { font-size: 13px; line-height: 1.7; color: var(--muted2); }
+  .dp-lever { background: var(--card); border: 1px solid rgba(163,218,214,0.15); border-radius: var(--radius-sm); padding: 16px; margin-top: 8px; }
+  .dp-lever-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--green); margin-bottom: 6px; }
+  .dp-lever-txt { font-size: 13px; line-height: 1.7; color: var(--muted2); }
 
-  /* Mobile nav */
-  .mobnav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--grey); padding: 8px 0 12px; z-index: 100; }
+  /* ── MOBILE NAV ── */
+  .mobnav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 8px 0 14px; z-index: 100; }
   .mobnav-inner { display: flex; justify-content: space-around; }
-  .mobnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; color: var(--grey-mid); font-size: 10px; font-weight: 700; text-transform: uppercase; border: none; background: transparent; font-family: 'Nunito', sans-serif; padding: 4px 12px; }
-  .mobnav-item.active { color: var(--green); }
-  .mobnav-item svg { width: 22px; height: 22px; }
+  .mobnav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: var(--muted); font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border: none; background: transparent; font-family: 'Nunito', sans-serif; padding: 4px 16px; }
+  .mobnav-btn.active { color: var(--green); }
+  .mobnav-btn svg { width: 22px; height: 22px; }
 
+  @media (max-width: 900px) {
+    .mrow { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+    .mrow-bar-wrap { grid-column: 1 / -1; }
+  }
   @media (max-width: 768px) {
     .sidebar { display: none; }
     .main { margin-left: 0; padding-bottom: 70px; }
     .mobnav { display: block; }
-    .topbar { padding: 14px 16px; }
+    .topbar { padding: 0 16px; }
     .content { padding: 16px; }
-    .summary-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .mgrid { grid-template-columns: 1fr; }
-    .dgrid { grid-template-columns: 1fr; }
-    .cmp-hdr { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+    .hero { gap: 0; }
+    .ring-wrap { max-width: 120px; }
+    .ring-svg { width: 100px; height: 100px; }
+    .ring-val { font-size: 22px; }
+    .ring-container { width: 100px; height: 100px; }
+    .mrow { grid-template-columns: 1fr; }
+    .mrow-val-block, .mrow-chg { text-align: left; }
+    .derived-grid { grid-template-columns: 1fr; }
+    .cmp-panels { grid-template-columns: 1fr; }
     .dpanel { width: 100%; }
-    .overall-banner { flex-direction: column; gap: 16px; }
-    .banner-right { justify-content: center; }
-    .topbar-right .btn-outline { display: none; }
+    .topbar-right .btn-ghost { display: none; }
   }
 </style>
 </head>
 <body>
+<div class="app">
 
+<!-- SIDEBAR -->
 <nav class="sidebar">
   <div class="sidebar-logo">
-    <svg viewBox="0 0 40 40" fill="none"><polygon points="20,3 37,12 37,28 20,37 3,28 3,12" fill="#144735"/><text x="20" y="26" text-anchor="middle" fill="white" font-family="Nunito,sans-serif" font-weight="800" font-size="14">k</text></svg>
+    <svg viewBox="0 0 40 40" fill="none"><polygon points="20,3 37,12 37,28 20,37 3,28 3,12" fill="#A3DAD6"/><text x="20" y="26" text-anchor="middle" fill="#0f1117" font-family="Nunito,sans-serif" font-weight="900" font-size="15">k</text></svg>
   </div>
-  <button class="nav-item active" onclick="showScreen('dashboard')" id="nav-dashboard">
+  <button class="nav-btn active" onclick="showScreen('dashboard')" id="nav-dashboard">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
     Panel
   </button>
-  <button class="nav-item" onclick="showScreen('compare')" id="nav-compare">
+  <button class="nav-btn" onclick="showScreen('compare')" id="nav-compare">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
     Compare
   </button>
-  <button class="nav-item" onclick="showScreen('upload')" id="nav-upload">
+  <button class="nav-btn" onclick="showScreen('upload')" id="nav-upload">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     Upload
   </button>
 </nav>
 
+<!-- MOBILE NAV -->
 <nav class="mobnav">
   <div class="mobnav-inner">
-    <button class="mobnav-item active" onclick="showScreen('dashboard')" id="mnav-dashboard">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Panel
+    <button class="mobnav-btn active" onclick="showScreen('dashboard')" id="mnav-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Panel
     </button>
-    <button class="mobnav-item" onclick="showScreen('compare')" id="mnav-compare">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
-      Compare
+    <button class="mobnav-btn" onclick="showScreen('compare')" id="mnav-compare">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>Compare
     </button>
-    <button class="mobnav-item" onclick="showScreen('upload')" id="mnav-upload">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Upload
+    <button class="mobnav-btn" onclick="showScreen('upload')" id="mnav-upload">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload
     </button>
   </div>
 </nav>
 
 <div class="main">
+  <!-- TOPBAR -->
   <div class="topbar">
-    <div>
-      <div class="topbar-title">Kcal Longevity Panel</div>
-      <div class="topbar-subtitle">18-Marker Blood Panel &middot; Day 0 &rarr; Day 90</div>
+    <div class="topbar-left">
+      <span class="topbar-title">Kcal Longevity Panel</span>
+      <span class="topbar-pill">18 Markers</span>
     </div>
     <div class="topbar-right">
-      <button class="btn-outline" onclick="showScreen('compare')">Compare Results</button>
-      <button class="btn-primary" onclick="showScreen('upload')">Upload PDF</button>
+      <button class="btn-ghost" onclick="showScreen('compare')">Compare</button>
+      <button class="btn-solid" onclick="showScreen('upload')">&#8593; Upload PDF</button>
     </div>
   </div>
 
-  <!-- DASHBOARD -->
+  <!-- ═══════════ DASHBOARD ═══════════ -->
   <div class="content screen active" id="screen-dashboard">
-    <div class="overall-banner">
-      <div class="banner-left">
-        <div class="banner-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+
+    <!-- Hero rings -->
+    <div class="hero">
+      <div class="ring-wrap" onclick="showScreen('dashboard')">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 130 130">
+            <circle class="track-bg" cx="65" cy="65" r="55" stroke-dasharray="345.4" stroke-dashoffset="0"/>
+            <circle class="track-fill" cx="65" cy="65" r="55" stroke="#A3DAD6" stroke-dasharray="345.4" stroke-dashoffset="87"/>
+          </svg>
+          <div class="ring-inner-text"><div class="ring-val">14</div><div class="ring-unit">of 18</div></div>
         </div>
-        <div>
-          <div class="banner-big">14 of 18 markers improved</div>
-          <div class="banner-sub">Day 90 vs Day 0 &middot; Kcal Longevity Plan</div>
+        <div class="ring-label"><div class="ring-label-dot" style="background:#A3DAD6"></div>Improved</div>
+      </div>
+      <div class="ring-divider"></div>
+      <div class="ring-wrap">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 130 130">
+            <circle class="track-bg" cx="65" cy="65" r="55" stroke-dasharray="345.4" stroke-dashoffset="0"/>
+            <circle class="track-fill" cx="65" cy="65" r="55" stroke="#6b7a99" stroke-dasharray="345.4" stroke-dashoffset="307"/>
+          </svg>
+          <div class="ring-inner-text"><div class="ring-val">2</div><div class="ring-unit">stable</div></div>
         </div>
+        <div class="ring-label"><div class="ring-label-dot" style="background:#6b7a99"></div>Stable</div>
       </div>
-      <div class="banner-right">
-        <div class="bstat"><div class="bstat-n">14</div><div class="bstat-l">Improved</div></div>
-        <div class="bstat"><div class="bstat-n">2</div><div class="bstat-l">Stable</div></div>
-        <div class="bstat"><div class="bstat-n">2</div><div class="bstat-l">Review</div></div>
-      </div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-tile hl">
-        <div class="tile-sys">Metabolic &amp; Glycemic</div>
-        <div class="tile-nums"><span class="tile-big">4</span><span class="tile-of">/ 4</span></div>
-        <div class="tile-lbl">markers improved</div>
-        <div class="tile-badges"><span class="badge bi">4 Improved</span></div>
-      </div>
-      <div class="summary-tile">
-        <div class="tile-sys">Lipids &amp; Cardiovascular</div>
-        <div class="tile-nums"><span class="tile-big">5</span><span class="tile-of">/ 7</span></div>
-        <div class="tile-lbl">markers improved</div>
-        <div class="tile-badges"><span class="badge bi">5 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
-      </div>
-      <div class="summary-tile">
-        <div class="tile-sys">Liver &amp; Organ Function</div>
-        <div class="tile-nums"><span class="tile-big">2</span><span class="tile-of">/ 2</span></div>
-        <div class="tile-lbl">markers improved</div>
-        <div class="tile-badges"><span class="badge bi">2 Improved</span></div>
-      </div>
-      <div class="summary-tile">
-        <div class="tile-sys">Micronutrients &amp; Hormones</div>
-        <div class="tile-nums"><span class="tile-big">3</span><span class="tile-of">/ 5</span></div>
-        <div class="tile-lbl">markers improved</div>
-        <div class="tile-badges"><span class="badge bi">3 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
+      <div class="ring-divider"></div>
+      <div class="ring-wrap">
+        <div class="ring-container">
+          <svg class="ring-svg" viewBox="0 0 130 130">
+            <circle class="track-bg" cx="65" cy="65" r="55" stroke-dasharray="345.4" stroke-dashoffset="0"/>
+            <circle class="track-fill" cx="65" cy="65" r="55" stroke="#ff5c5c" stroke-dasharray="345.4" stroke-dashoffset="307"/>
+          </svg>
+          <div class="ring-inner-text"><div class="ring-val">2</div><div class="ring-unit">review</div></div>
+        </div>
+        <div class="ring-label"><div class="ring-label-dot" style="background:#ff5c5c"></div>Review</div>
       </div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Metabolic &amp; Glycemic</div><div class="sec-desc">How efficiently the body manages blood sugar and energy. The engine room of biological ageing.</div></div>
-    <div class="mgrid">
-      <div class="mcard si" onclick="openDetail('hba1c')">
-        <div class="ctop"><span class="clbl">HbA1c</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">5.1</span><span class="cunit">%</span><span class="cchg ci">&#8595; 0.4 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>Low</span><span>Longevity &lt;5.4%</span><span>Ref &lt;5.7%</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:54%"></div><div class="rm d0" style="left:55%"></div><div class="rm" style="left:51%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.5%</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 5.1%</div></div></div>
+    <!-- Summary tiles -->
+    <div class="summary-grid">
+      <div class="sum-card">
+        <div class="sum-sys">Metabolic &amp; Glycemic</div>
+        <div class="sum-nums"><span class="sum-big">4</span><span class="sum-of">&nbsp;/ 4</span></div>
+        <div class="sum-lbl">markers improved</div>
+        <div class="sum-bar"><div class="sum-bar-fill" style="width:100%"></div></div>
+        <div class="sum-badges"><span class="badge bi">4 Improved</span></div>
       </div>
-      <div class="mcard si" onclick="openDetail('fasting_insulin')">
-        <div class="ctop"><span class="clbl">Fasting Insulin</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">6.2</span><span class="cunit">&#181;IU/mL</span><span class="cchg ci">&#8595; 3.1 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>2</span><span>Longevity 2&#8211;8</span><span>25</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:26%"></div><div class="rm d0" style="left:37%"></div><div class="rm" style="left:18%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 9.3</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 6.2</div></div></div>
+      <div class="sum-card">
+        <div class="sum-sys">Lipids &amp; Cardiovascular</div>
+        <div class="sum-nums"><span class="sum-big">5</span><span class="sum-of">&nbsp;/ 7</span></div>
+        <div class="sum-lbl">markers improved</div>
+        <div class="sum-bar"><div class="sum-bar-fill" style="width:71%"></div></div>
+        <div class="sum-badges"><span class="badge bi">5 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
       </div>
-      <div class="mcard si" onclick="openDetail('fasting_glucose')">
-        <div class="ctop"><span class="clbl">Fasting Glucose</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">4.8</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.4 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>3.9</span><span>Longevity 4.4&#8211;5.2</span><span>5.6</span></div><div class="rtrack"><div class="ropt" style="left:29%;width:38%"></div><div class="rm d0" style="left:62%"></div><div class="rm" style="left:53%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.2</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 4.8</div></div></div>
+      <div class="sum-card">
+        <div class="sum-sys">Liver &amp; Organ Function</div>
+        <div class="sum-nums"><span class="sum-big">2</span><span class="sum-of">&nbsp;/ 2</span></div>
+        <div class="sum-lbl">markers improved</div>
+        <div class="sum-bar"><div class="sum-bar-fill" style="width:100%"></div></div>
+        <div class="sum-badges"><span class="badge bi">2 Improved</span></div>
       </div>
-      <div class="mcard si" onclick="openDetail('uric_acid')">
-        <div class="ctop"><span class="clbl">Uric Acid</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">318</span><span class="cunit">&#181;mol/L</span><span class="cchg ci">&#8595; 52 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;360</span><span>420</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:86%"></div><div class="rm d0" style="left:88%"></div><div class="rm" style="left:76%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 370</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 318</div></div></div>
-      </div>
-    </div>
-
-    <div class="sec-head"><div class="sec-title">Lipids, Cardiovascular &amp; Inflammation</div><div class="sec-desc">Complete picture of cardiovascular risk and the chronic inflammation that drives it.</div></div>
-    <div class="mgrid">
-      <div class="mcard si" onclick="openDetail('apob')">
-        <div class="ctop"><span class="clbl">ApoB</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">0.74</span><span class="cunit">g/L</span><span class="cchg ci">&#8595; 0.12 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;0.8</span><span>0.9</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:89%"></div><div class="rm d0" style="left:96%"></div><div class="rm" style="left:82%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 0.86</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.74</div></div></div>
-      </div>
-      <div class="mcard si" onclick="openDetail('hs_crp')">
-        <div class="ctop"><span class="clbl">hs-CRP</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">0.6</span><span class="cunit">mg/L</span><span class="cchg ci">&#8595; 0.8 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;1.0</span><span>3+</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:33%"></div><div class="rm d0" style="left:47%"></div><div class="rm" style="left:20%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.4</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.6</div></div></div>
-      </div>
-      <div class="mcard si" onclick="openDetail('homocysteine')">
-        <div class="ctop"><span class="clbl">Homocysteine</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">7.2</span><span class="cunit">&#181;mol/L</span><span class="cchg ci">&#8595; 2.4 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;8</span><span>10</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:80%"></div><div class="rm d0" style="left:96%"></div><div class="rm" style="left:72%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 9.6</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 7.2</div></div></div>
-      </div>
-      <div class="mcard ss" onclick="openDetail('total_cholesterol')">
-        <div class="ctop"><span class="clbl">Total Cholesterol</span><span class="cdot ds"></span></div>
-        <div class="cvrow"><span class="cval">4.9</span><span class="cunit">mmol/L</span><span class="cchg cs">&#8594; stable</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;5.2</span><span>6+</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:87%"></div><div class="rm d0" style="left:83%"></div><div class="rm" style="left:82%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.0</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 4.9</div></div></div>
-      </div>
-      <div class="mcard si" onclick="openDetail('ldl_cholesterol')">
-        <div class="ctop"><span class="clbl">LDL Cholesterol</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">2.4</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.5 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;2.6</span><span>3.0</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:87%"></div><div class="rm d0" style="left:97%"></div><div class="rm" style="left:80%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 2.9</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 2.4</div></div></div>
-      </div>
-      <div class="mcard sr" onclick="openDetail('hdl_cholesterol')">
-        <div class="ctop"><span class="clbl">HDL Cholesterol</span><span class="cdot dr"></span></div>
-        <div class="cvrow"><span class="cval">1.1</span><span class="cunit">mmol/L</span><span class="cchg cr">&#8595; needs review</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &gt;1.3</span><span>2+</span></div><div class="rtrack"><div class="ropt" style="left:65%;width:35%"></div><div class="rm d0" style="left:60%"></div><div class="rm" style="left:55%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.2</div><div class="rli"><div class="ldot" style="background:var(--review)"></div>Day 90: 1.1</div></div></div>
-      </div>
-      <div class="mcard si" onclick="openDetail('triglycerides')">
-        <div class="ctop"><span class="clbl">Triglycerides</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">0.82</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.48 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;1.0</span><span>1.7</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:59%"></div><div class="rm d0" style="left:77%"></div><div class="rm" style="left:48%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.30</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.82</div></div></div>
+      <div class="sum-card">
+        <div class="sum-sys">Micronutrients &amp; Hormones</div>
+        <div class="sum-nums"><span class="sum-big">3</span><span class="sum-of">&nbsp;/ 5</span></div>
+        <div class="sum-lbl">markers improved</div>
+        <div class="sum-bar"><div class="sum-bar-fill" style="width:60%"></div></div>
+        <div class="sum-badges"><span class="badge bi">3 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
       </div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Liver &amp; Organ Function</div><div class="sec-desc">The liver registers diet quality first and recovers fastest under clean nutrition.</div></div>
-    <div class="mgrid">
-      <div class="mcard si" onclick="openDetail('alt')">
-        <div class="ctop"><span class="clbl">ALT</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">18</span><span class="cunit">U/L</span><span class="cchg ci">&#8595; 14 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;25</span><span>45</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:56%"></div><div class="rm d0" style="left:71%"></div><div class="rm" style="left:40%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 32</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 18</div></div></div>
+    <!-- Metabolic -->
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Metabolic &amp; Glycemic</div><div class="sec-count">4 markers</div><div class="sec-line"></div></div>
+    <div class="marker-list">
+      <div class="mrow improved" onclick="openDetail('hba1c')">
+        <div><div class="mrow-name">HbA1c</div><div class="mrow-sys">Glycated Haemoglobin</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>Low</span><span>Longevity &lt;5.4%</span><span>Ref &lt;5.7%</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:54%"></div><div class="mrow-d0" style="left:55%"></div><div class="mrow-d90" style="left:51%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">5.1</div><div class="mrow-unit">%</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.4</span></div>
       </div>
-      <div class="mcard si" onclick="openDetail('ggt')">
-        <div class="ctop"><span class="clbl">GGT</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">14</span><span class="cunit">U/L</span><span class="cchg ci">&#8595; 12 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;20</span><span>50</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:40%"></div><div class="rm d0" style="left:52%"></div><div class="rm" style="left:28%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 26</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 14</div></div></div>
+      <div class="mrow improved" onclick="openDetail('fasting_insulin')">
+        <div><div class="mrow-name">Fasting Insulin</div><div class="mrow-sys">Metabolic &amp; Glycemic</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>2</span><span>Longevity 2&#8211;8</span><span>25</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:26%"></div><div class="mrow-d0" style="left:37%"></div><div class="mrow-d90" style="left:18%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">6.2</div><div class="mrow-unit">&#181;IU/mL</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 3.1</span></div>
       </div>
-    </div>
-
-    <div class="sec-head"><div class="sec-title">Micronutrients, Aging &amp; Hormones</div><div class="sec-desc">Foundational nutrients and hormones governing energy, mood, cognition, and recovery.</div></div>
-    <div class="mgrid">
-      <div class="mcard si" onclick="openDetail('vitamin_d')">
-        <div class="ctop"><span class="clbl">Vitamin D</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">118</span><span class="cunit">nmol/L</span><span class="cchg ci">&#8593; 46 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>75</span><span>Target 100&#8211;150</span><span>250</span></div><div class="rtrack"><div class="ropt" style="left:14%;width:43%"></div><div class="rm d0" style="left:8%"></div><div class="rm" style="left:25%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 72</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 118</div></div></div>
+      <div class="mrow improved" onclick="openDetail('fasting_glucose')">
+        <div><div class="mrow-name">Fasting Glucose</div><div class="mrow-sys">Metabolic &amp; Glycemic</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>3.9</span><span>Longevity 4.4&#8211;5.2</span><span>5.6</span></div><div class="mrow-track"><div class="mrow-opt" style="left:29%;width:38%"></div><div class="mrow-d0" style="left:62%"></div><div class="mrow-d90" style="left:53%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">4.8</div><div class="mrow-unit">mmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.4</span></div>
       </div>
-      <div class="mcard si" onclick="openDetail('vitamin_b12')">
-        <div class="ctop"><span class="clbl">Vitamin B12</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">488</span><span class="cunit">pmol/L</span><span class="cchg ci">&#8593; 112 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>148</span><span>Target 400&#8211;664</span><span>664</span></div><div class="rtrack"><div class="ropt" style="left:49%;width:51%"></div><div class="rm d0" style="left:37%"></div><div class="rm" style="left:66%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 376</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 488</div></div></div>
-      </div>
-      <div class="mcard ss" onclick="openDetail('ferritin')">
-        <div class="ctop"><span class="clbl">Ferritin</span><span class="cdot ds"></span></div>
-        <div class="cvrow"><span class="cval">88</span><span class="cunit">ng/mL</span><span class="cchg cs">&#8594; stable</span></div>
-        <div class="rbar"><div class="rlbls"><span>30</span><span>Target 50&#8211;150</span><span>400</span></div><div class="rtrack"><div class="ropt" style="left:5%;width:32%"></div><div class="rm d0" style="left:18%"></div><div class="rm" style="left:16%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 92</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 88</div></div></div>
-      </div>
-      <div class="mcard tsh" onclick="openDetail('tsh')">
-        <div class="ctop"><span class="clbl">TSH</span><span class="cdot dr"></span></div>
-        <div class="cvrow"><span class="cval">4.8</span><span class="cunit">mIU/L</span><span class="cchg cr">&#8593; outside range</span></div>
-        <div class="rbar"><div class="rlbls"><span>0.4</span><span>Target 0.5&#8211;2.5</span><span>4.0</span></div><div class="rtrack"><div class="ropt" style="left:3%;width:57%"></div><div class="rm d0" style="left:82%"></div><div class="rm" style="left:100%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 3.4</div><div class="rli"><div class="ldot" style="background:var(--review)"></div>Day 90: 4.8</div></div></div>
-        <div class="tsh-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Physician referral recommended &#8212; TSH outside reference range</div>
-      </div>
-      <div class="mcard si" onclick="openDetail('igf_1')">
-        <div class="ctop"><span class="clbl">IGF-1</span><span class="cdot di"></span></div>
-        <div class="cvrow"><span class="cval">182</span><span class="cunit">ng/mL</span><span class="cchg ci">&#8593; 28 improved</span></div>
-        <div class="rbar"><div class="rlbls"><span>100</span><span>Target 150&#8211;220</span><span>250</span></div><div class="rtrack"><div class="ropt" style="left:33%;width:80%"></div><div class="rm d0" style="left:40%"></div><div class="rm" style="left:55%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 154</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 182</div></div></div>
+      <div class="mrow improved" onclick="openDetail('uric_acid')">
+        <div><div class="mrow-name">Uric Acid</div><div class="mrow-sys">Metabolic &amp; Glycemic</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;360</span><span>420</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:86%"></div><div class="mrow-d0" style="left:88%"></div><div class="mrow-d90" style="left:76%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">318</div><div class="mrow-unit">&#181;mol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 52</span></div>
       </div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Calculated Metrics</div><div class="sec-desc">Derived from the panel above &#8212; not additional blood draws.</div></div>
-    <div class="dgrid">
-      <div class="dcard"><div class="dlbl">HOMA-IR</div><div><span class="dval">1.33</span><span class="dunit">score</span></div><div class="dtgt">Longevity target: &lt;1.0 &middot; Reference: &lt;2.0</div><div class="dint">The single most reliable proxy for insulin sensitivity. Calculated as (Fasting Insulin &times; Fasting Glucose) &divide; 22.5. Day 0 was 2.14 &#8212; now below the reference threshold.</div></div>
-      <div class="dcard"><div class="dlbl">Triglyceride / HDL Ratio</div><div><span class="dval">0.75</span><span class="dunit">ratio</span></div><div class="dtgt">Longevity target: &lt;0.87 &middot; Reference: &lt;1.5</div><div class="dint">One of the strongest single predictors of cardiometabolic health. Calculated as Triglycerides &divide; HDL. Day 0 was 1.08 &#8212; now well within the longevity target.</div></div>
-      <div class="dcard"><div class="dlbl">Non-HDL Cholesterol</div><div><span class="dval">3.8</span><span class="dunit">mmol/L</span></div><div class="dtgt">Longevity target: &lt;2.6 &middot; Reference: &lt;3.4</div><div class="dint">Captures all atherogenic cholesterol in one number. Calculated as Total Cholesterol &minus; HDL. Day 0 was 3.8 &#8212; unchanged; improvement in LDL offset by HDL decline.</div></div>
+    <!-- Lipids -->
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Lipids, Cardiovascular &amp; Inflammation</div><div class="sec-count">7 markers</div><div class="sec-line"></div></div>
+    <div class="marker-list">
+      <div class="mrow improved" onclick="openDetail('apob')">
+        <div><div class="mrow-name">ApoB</div><div class="mrow-sys">Apolipoprotein B</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;0.8</span><span>0.9</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:89%"></div><div class="mrow-d0" style="left:96%"></div><div class="mrow-d90" style="left:82%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">0.74</div><div class="mrow-unit">g/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.12</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('hs_crp')">
+        <div><div class="mrow-name">hs-CRP</div><div class="mrow-sys">High-Sensitivity CRP</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;1.0</span><span>3+</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:33%"></div><div class="mrow-d0" style="left:47%"></div><div class="mrow-d90" style="left:20%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">0.6</div><div class="mrow-unit">mg/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.8</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('homocysteine')">
+        <div><div class="mrow-name">Homocysteine</div><div class="mrow-sys">Cardiovascular Risk</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;8</span><span>10</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:80%"></div><div class="mrow-d0" style="left:96%"></div><div class="mrow-d90" style="left:72%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">7.2</div><div class="mrow-unit">&#181;mol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 2.4</span></div>
+      </div>
+      <div class="mrow stable" onclick="openDetail('total_cholesterol')">
+        <div><div class="mrow-name">Total Cholesterol</div><div class="mrow-sys">Lipid Panel</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;5.2</span><span>6+</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:87%"></div><div class="mrow-d0" style="left:83%"></div><div class="mrow-d90" style="left:82%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">4.9</div><div class="mrow-unit">mmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-s">&#8594; stable</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('ldl_cholesterol')">
+        <div><div class="mrow-name">LDL Cholesterol</div><div class="mrow-sys">Lipid Panel</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;2.6</span><span>3.0</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:87%"></div><div class="mrow-d0" style="left:97%"></div><div class="mrow-d90" style="left:80%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">2.4</div><div class="mrow-unit">mmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.5</span></div>
+      </div>
+      <div class="mrow review" onclick="openDetail('hdl_cholesterol')">
+        <div><div class="mrow-name">HDL Cholesterol</div><div class="mrow-sys">Lipid Panel</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &gt;1.3</span><span>2+</span></div><div class="mrow-track"><div class="mrow-opt" style="left:65%;width:35%"></div><div class="mrow-d0" style="left:60%"></div><div class="mrow-d90 review" style="left:55%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">1.1</div><div class="mrow-unit">mmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-r">&#8595; review</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('triglycerides')">
+        <div><div class="mrow-name">Triglycerides</div><div class="mrow-sys">Lipid Panel</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;1.0</span><span>1.7</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:59%"></div><div class="mrow-d0" style="left:77%"></div><div class="mrow-d90" style="left:48%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">0.82</div><div class="mrow-unit">mmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 0.48</span></div>
+      </div>
+    </div>
+
+    <!-- Liver -->
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Liver &amp; Organ Function</div><div class="sec-count">2 markers</div><div class="sec-line"></div></div>
+    <div class="marker-list">
+      <div class="mrow improved" onclick="openDetail('alt')">
+        <div><div class="mrow-name">ALT</div><div class="mrow-sys">Alanine Aminotransferase</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;25</span><span>45</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:56%"></div><div class="mrow-d0" style="left:71%"></div><div class="mrow-d90" style="left:40%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">18</div><div class="mrow-unit">U/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 14</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('ggt')">
+        <div><div class="mrow-name">GGT</div><div class="mrow-sys">Gamma-Glutamyl Transferase</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0</span><span>Target &lt;20</span><span>50</span></div><div class="mrow-track"><div class="mrow-opt" style="left:0%;width:40%"></div><div class="mrow-d0" style="left:52%"></div><div class="mrow-d90" style="left:28%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">14</div><div class="mrow-unit">U/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8595; 12</span></div>
+      </div>
+    </div>
+
+    <!-- Micronutrients -->
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Micronutrients, Aging &amp; Hormones</div><div class="sec-count">5 markers</div><div class="sec-line"></div></div>
+    <div class="marker-list">
+      <div class="mrow improved" onclick="openDetail('vitamin_d')">
+        <div><div class="mrow-name">Vitamin D</div><div class="mrow-sys">25-Hydroxyvitamin D</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>75</span><span>Target 100&#8211;150</span><span>250</span></div><div class="mrow-track"><div class="mrow-opt" style="left:14%;width:43%"></div><div class="mrow-d0" style="left:8%"></div><div class="mrow-d90" style="left:25%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">118</div><div class="mrow-unit">nmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8593; 46</span></div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('vitamin_b12')">
+        <div><div class="mrow-name">Vitamin B12</div><div class="mrow-sys">Serum Cobalamin</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>148</span><span>Target 400&#8211;664</span><span>664</span></div><div class="mrow-track"><div class="mrow-opt" style="left:49%;width:51%"></div><div class="mrow-d0" style="left:37%"></div><div class="mrow-d90" style="left:66%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">488</div><div class="mrow-unit">pmol/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8593; 112</span></div>
+      </div>
+      <div class="mrow stable" onclick="openDetail('ferritin')">
+        <div><div class="mrow-name">Ferritin</div><div class="mrow-sys">Serum Ferritin</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>30</span><span>Target 50&#8211;150</span><span>400</span></div><div class="mrow-track"><div class="mrow-opt" style="left:5%;width:32%"></div><div class="mrow-d0" style="left:18%"></div><div class="mrow-d90" style="left:16%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">88</div><div class="mrow-unit">ng/mL</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-s">&#8594; stable</span></div>
+      </div>
+      <div class="mrow review" onclick="openDetail('tsh')" style="flex-wrap:wrap;">
+        <div><div class="mrow-name">TSH</div><div class="mrow-sys">Thyroid Stimulating Hormone</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>0.4</span><span>Target 0.5&#8211;2.5</span><span>4.0</span></div><div class="mrow-track"><div class="mrow-opt" style="left:3%;width:57%"></div><div class="mrow-d0" style="left:82%"></div><div class="mrow-d90 review" style="left:100%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">4.8</div><div class="mrow-unit">mIU/L</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-r">&#8593; review</span></div>
+        <div class="tsh-flag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Physician referral recommended &#8212; TSH outside reference range</div>
+      </div>
+      <div class="mrow improved" onclick="openDetail('igf_1')">
+        <div><div class="mrow-name">IGF-1</div><div class="mrow-sys">Insulin-like Growth Factor 1</div></div>
+        <div class="mrow-bar-wrap"><div class="mrow-bar-labels"><span>100</span><span>Target 150&#8211;220</span><span>250</span></div><div class="mrow-track"><div class="mrow-opt" style="left:33%;width:47%"></div><div class="mrow-d0" style="left:36%"></div><div class="mrow-d90" style="left:55%"></div></div></div>
+        <div class="mrow-val-block"><div class="mrow-val">182</div><div class="mrow-unit">ng/mL</div></div>
+        <div class="mrow-chg"><span class="mrow-chg-pill chg-i">&#8593; 28</span></div>
+      </div>
+    </div>
+
+    <!-- Calculated -->
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Calculated Metrics</div><div class="sec-count">3 derived</div><div class="sec-line"></div></div>
+    <div class="derived-grid">
+      <div class="dcard"><div class="dcard-lbl">HOMA-IR</div><div><span class="dcard-val">1.33</span><span class="dcard-unit">score</span></div><div class="dcard-tgt">Longevity &lt;1.0 &middot; Reference &lt;2.0</div><div class="dcard-desc">Calculated as (Fasting Insulin &times; Fasting Glucose) &divide; 22.5. Day 0 was 2.14 &#8212; now below the reference threshold.</div></div>
+      <div class="dcard"><div class="dcard-lbl">Trig / HDL Ratio</div><div><span class="dcard-val">0.75</span><span class="dcard-unit">ratio</span></div><div class="dcard-tgt">Longevity &lt;0.87 &middot; Reference &lt;1.5</div><div class="dcard-desc">Calculated as Triglycerides &divide; HDL. Day 0 was 1.08 &#8212; now well within the longevity target.</div></div>
+      <div class="dcard"><div class="dcard-lbl">Non-HDL Cholesterol</div><div><span class="dcard-val">3.8</span><span class="dcard-unit">mmol/L</span></div><div class="dcard-tgt">Longevity &lt;2.6 &middot; Reference &lt;3.4</div><div class="dcard-desc">Calculated as Total Cholesterol &minus; HDL. Day 0 was 3.8 &#8212; unchanged; LDL improvement offset by HDL decline.</div></div>
     </div>
   </div>
 
-  <!-- COMPARE -->
+  <!-- ═══════════ COMPARE ═══════════ -->
   <div class="content screen" id="screen-compare">
-    <div class="cmp-hdr">
-      <div class="cmp-card"><div class="cmp-lbl">Baseline Draw</div><div class="cmp-date">Day 0 &#8212; 13 Feb 2026</div><div class="cmp-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
-      <div class="cmp-card"><div class="cmp-lbl">Endpoint Draw</div><div class="cmp-date">Day 90 &#8212; 13 May 2026</div><div class="cmp-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
+    <div class="cmp-panels">
+      <div class="cmp-panel"><div class="cmp-panel-lbl">Baseline Draw</div><div class="cmp-panel-date">Day 0 &#8212; 13 Feb 2026</div><div class="cmp-panel-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
+      <div class="cmp-panel"><div class="cmp-panel-lbl">Endpoint Draw</div><div class="cmp-panel-date">Day 90 &#8212; 13 May 2026</div><div class="cmp-panel-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
     </div>
-    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;">
+    <div class="ctbl-wrap">
       <table class="ctbl">
         <thead><tr><th>Marker</th><th>Day 0</th><th>Day 90</th><th>Change</th><th>Status</th></tr></thead>
         <tbody>
-          <tr class="csec"><td colspan="5">Metabolic &amp; Glycemic</td></tr>
+          <tr class="ctbl-sec"><td colspan="5">Metabolic &amp; Glycemic</td></tr>
           <tr><td>HbA1c (%)</td><td>5.5</td><td>5.1</td><td class="dgi">&#8595; 0.4</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Fasting Insulin (&#181;IU/mL)</td><td>9.3</td><td>6.2</td><td class="dgi">&#8595; 3.1</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Fasting Glucose (mmol/L)</td><td>5.2</td><td>4.8</td><td class="dgi">&#8595; 0.4</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Uric Acid (&#181;mol/L)</td><td>370</td><td>318</td><td class="dgi">&#8595; 52</td><td><span class="badge bi">Improved</span></td></tr>
-          <tr class="csec"><td colspan="5">Lipids, Cardiovascular &amp; Inflammation</td></tr>
+          <tr class="ctbl-sec"><td colspan="5">Lipids, Cardiovascular &amp; Inflammation</td></tr>
           <tr><td>ApoB (g/L)</td><td>0.86</td><td>0.74</td><td class="dgi">&#8595; 0.12</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>hs-CRP (mg/L)</td><td>1.4</td><td>0.6</td><td class="dgi">&#8595; 0.8</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Homocysteine (&#181;mol/L)</td><td>9.6</td><td>7.2</td><td class="dgi">&#8595; 2.4</td><td><span class="badge bi">Improved</span></td></tr>
@@ -439,16 +510,16 @@
           <tr><td>LDL Cholesterol (mmol/L)</td><td>2.9</td><td>2.4</td><td class="dgi">&#8595; 0.5</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>HDL Cholesterol (mmol/L)</td><td>1.2</td><td>1.1</td><td class="dgr">&#8595; 0.1</td><td><span class="badge br">Review</span></td></tr>
           <tr><td>Triglycerides (mmol/L)</td><td>1.30</td><td>0.82</td><td class="dgi">&#8595; 0.48</td><td><span class="badge bi">Improved</span></td></tr>
-          <tr class="csec"><td colspan="5">Liver &amp; Organ Function</td></tr>
+          <tr class="ctbl-sec"><td colspan="5">Liver &amp; Organ Function</td></tr>
           <tr><td>ALT (U/L)</td><td>32</td><td>18</td><td class="dgi">&#8595; 14</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>GGT (U/L)</td><td>26</td><td>14</td><td class="dgi">&#8595; 12</td><td><span class="badge bi">Improved</span></td></tr>
-          <tr class="csec"><td colspan="5">Micronutrients, Aging &amp; Hormones</td></tr>
+          <tr class="ctbl-sec"><td colspan="5">Micronutrients, Aging &amp; Hormones</td></tr>
           <tr><td>Vitamin D (nmol/L)</td><td>72</td><td>118</td><td class="dgi">&#8593; 46</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Vitamin B12 (pmol/L)</td><td>376</td><td>488</td><td class="dgi">&#8593; 112</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Ferritin (ng/mL)</td><td>92</td><td>88</td><td class="dgs">&#8595; 4</td><td><span class="badge bs">Stable</span></td></tr>
           <tr><td>TSH (mIU/L)</td><td>3.4</td><td>4.8</td><td class="dgr">&#8593; 1.4</td><td><span class="badge br">Review &#9877;</span></td></tr>
           <tr><td>IGF-1 (ng/mL)</td><td>154</td><td>182</td><td class="dgi">&#8593; 28</td><td><span class="badge bi">Improved</span></td></tr>
-          <tr class="csec"><td colspan="5">Calculated Metrics</td></tr>
+          <tr class="ctbl-sec"><td colspan="5">Calculated Metrics</td></tr>
           <tr><td>HOMA-IR</td><td>2.14</td><td>1.33</td><td class="dgi">&#8595; 0.81</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Trig / HDL Ratio</td><td>1.08</td><td>0.75</td><td class="dgi">&#8595; 0.33</td><td><span class="badge bi">Improved</span></td></tr>
           <tr><td>Non-HDL Cholesterol (mmol/L)</td><td>3.8</td><td>3.8</td><td class="dgs">0</td><td><span class="badge bs">Stable</span></td></tr>
@@ -457,59 +528,54 @@
     </div>
   </div>
 
-  <!-- UPLOAD -->
+  <!-- ═══════════ UPLOAD ═══════════ -->
   <div class="content screen" id="screen-upload">
     <div class="upzone" onclick="simulateUpload()">
-      <div class="upicon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-      <div class="uptitle">Upload Blood Panel PDF</div>
-      <div class="upsub">Drag and drop your lab report, or click to choose a file.<br>Supports PDF, JPG, PNG &middot; Max 20 MB</div>
-      <button class="btn-primary" style="margin:0 auto;">Choose File</button>
+      <div class="upzone-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A3DAD6" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="upzone-title">Upload Blood Panel PDF</div>
+      <div class="upzone-sub">Drag and drop your lab report, or click to choose a file.<br>Supports PDF, JPG, PNG &middot; Max 20 MB</div>
+      <button class="btn-solid" style="margin:0 auto;">Choose File</button>
       <div class="upsteps">
         <div class="upstep active" id="step-1"><div class="stepn">1</div><div class="steplbl">Upload PDF</div></div>
         <div class="stepcon"></div>
         <div class="upstep" id="step-2"><div class="stepn">2</div><div class="steplbl">AI Extraction</div></div>
         <div class="stepcon"></div>
-        <div class="upstep" id="step-3"><div class="stepn">3</div><div class="steplbl">Validate Values</div></div>
+        <div class="upstep" id="step-3"><div class="stepn">3</div><div class="steplbl">Validate</div></div>
         <div class="stepcon"></div>
         <div class="upstep" id="step-4"><div class="stepn">4</div><div class="steplbl">View Results</div></div>
       </div>
     </div>
-    <div class="sec-head"><div class="sec-title">Past Uploads</div></div>
-    <div class="upitem">
-      <div class="upficon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <div><div class="upfname">Day_90_BloodPanel_May2026.pdf</div><div class="upfmeta">13 May 2026 &middot; 18 markers extracted &middot; Day 90</div></div>
-      <div class="upfst">Processed</div>
-    </div>
-    <div class="upitem">
-      <div class="upficon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <div><div class="upfname">Day_0_BloodPanel_Feb2026.pdf</div><div class="upfmeta">13 Feb 2026 &middot; 18 markers extracted &middot; Day 0 (Baseline)</div></div>
-      <div class="upfst">Processed</div>
+    <div class="sec-head"><div class="sec-line"></div><div class="sec-title">Past Uploads</div><div class="sec-line"></div></div>
+    <div class="uplist">
+      <div class="upitem"><div class="upitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A3DAD6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="upitem-name">Day_90_BloodPanel_May2026.pdf</div><div class="upitem-meta">13 May 2026 &middot; 18 markers extracted &middot; Day 90</div></div><div class="upitem-badge">Processed</div></div>
+      <div class="upitem"><div class="upitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A3DAD6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="upitem-name">Day_0_BloodPanel_Feb2026.pdf</div><div class="upitem-meta">13 Feb 2026 &middot; 18 markers extracted &middot; Day 0 (Baseline)</div></div><div class="upitem-badge">Processed</div></div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- DETAIL PANEL -->
 <div class="doverlay" id="doverlay" onclick="closeDet(event)">
   <div class="dpanel">
     <button class="dclose" onclick="closeDetBtn()">&#x2715;</button>
-    <div class="dsys" id="dp-sys"></div>
-    <div class="dname" id="dp-name"></div>
-    <div class="dfull" id="dp-full"></div>
-    <div class="dvblock">
-      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--grey-mid);margin-bottom:4px;">Day 90 Value</div>
-      <div style="display:flex;align-items:baseline;gap:6px;"><span class="dv" id="dp-val"></span><span class="dvunit" id="dp-unit"></span></div>
-      <div class="dvchg" id="dp-chg"></div>
+    <div class="dp-sys" id="dp-sys"></div>
+    <div class="dp-name" id="dp-name"></div>
+    <div class="dp-full" id="dp-full"></div>
+    <div class="dp-valblock">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:6px;">Day 90 Value</div>
+      <div style="display:flex;align-items:baseline;gap:6px;"><span class="dp-val" id="dp-val"></span><span class="dp-unit" id="dp-unit"></span></div>
+      <div class="dp-chg" id="dp-chg"></div>
     </div>
-    <div class="dsect">What it measures</div><div class="dtxt" id="dp-what"></div>
-    <div class="dsect">Why it matters</div><div class="dtxt" id="dp-why"></div>
-    <div class="dsect">Kcal Lever</div>
-    <div class="dlever"><div class="dlevtitle">How the plan moves this marker</div><div id="dp-lever"></div></div>
+    <div class="dp-sect">What it measures</div><div class="dp-txt" id="dp-what"></div>
+    <div class="dp-sect">Why it matters</div><div class="dp-txt" id="dp-why"></div>
+    <div class="dp-sect">Kcal Lever</div>
+    <div class="dp-lever"><div class="dp-lever-title">How the plan moves this marker</div><div class="dp-lever-txt" id="dp-lever"></div></div>
   </div>
 </div>
 
 <script>
-const MD={hba1c:{s:'Metabolic & Glycemic',n:'HbA1c',f:'Glycated Haemoglobin',v:'5.1',u:'%',c:'&#8595; 0.4 from Day 0 (5.5%) &#8212; Improved',w:'The average blood sugar level over the previous 90 days, captured as the percentage of haemoglobin bound by glucose.',y:'The single most stable measure of metabolic ageing. Elevated levels accelerate glycation &#8212; the silent chemical reaction that stiffens blood vessels, dulls skin, and damages brain tissue.',l:'The 50/25/12.5/12.5 plate keeps blood glucose stable across every meal. No refined sugar, no high-glycaemic spikes.'},fasting_insulin:{s:'Metabolic & Glycemic',n:'Fasting Insulin',f:'Fasting Insulin',v:'6.2',u:'&#181;IU/mL',c:'&#8595; 3.1 from Day 0 (9.3) &#8212; Improved',w:'How much insulin the pancreas is producing in the fasted state &#8212; a direct measure of how hard the body is working to keep blood sugar normal.',y:'The earliest clinical warning sign of metabolic dysfunction. Rises years &#8212; sometimes a decade &#8212; before fasting glucose moves.',l:'Combined with fasting glucose to calculate HOMA-IR. Sustained low-glycaemic intake reduces pancreatic load.'},fasting_glucose:{s:'Metabolic & Glycemic',n:'Fasting Glucose',f:'Fasting Plasma Glucose',v:'4.8',u:'mmol/L',c:'&#8595; 0.4 from Day 0 (5.2) &#8212; Improved',w:'Blood sugar concentration after an overnight fast.',y:'Standard reference for glycaemic control. Paired with fasting insulin gives HOMA-IR, the gold-standard calculation for insulin resistance.',l:'Sustained reduction from the cumulative effect of stable, low-glycaemic meals across 90 days.'},uric_acid:{s:'Metabolic & Glycemic',n:'Uric Acid',f:'Serum Uric Acid',v:'318',u:'&#181;mol/L',c:'&#8595; 52 from Day 0 (370) &#8212; Improved',w:'A by-product of purine and fructose metabolism circulating in the bloodstream.',y:'Highly responsive to diet &#8212; especially refined sugar, alcohol, processed meat. An independent driver of metabolic syndrome and cardiovascular risk.',l:'Eliminating refined fructose, processed meats, and alcohol typically drops uric acid within weeks.'},apob:{s:'Lipids, Cardiovascular & Inflammation',n:'ApoB',f:'Apolipoprotein B',v:'0.74',u:'g/L',c:'&#8595; 0.12 from Day 0 (0.86) &#8212; Improved',w:'The absolute count of atherogenic particles in the blood &#8212; every particle capable of building plaque inside an artery wall.',y:'The modern longevity standard for cardiovascular risk. More predictive than LDL cholesterol alone.',l:'Reduction in refined carbs, saturated fat moderation, and high fibre intake all converge to lower ApoB.'},hs_crp:{s:'Lipids, Cardiovascular & Inflammation',n:'hs-CRP',f:'High-Sensitivity C-Reactive Protein',v:'0.6',u:'mg/L',c:'&#8595; 0.8 from Day 0 (1.4) &#8212; Improved',w:'The level of systemic, low-grade inflammation in the body.',y:'Chronic inflammation is the unifying mechanism behind cardiovascular disease, cancer, neurodegeneration, and accelerated biological ageing.',l:'The 50% greens base, omega-3-rich proteins, and elimination of inflammatory ingredients are designed specifically to cool systemic inflammation.'},homocysteine:{s:'Lipids, Cardiovascular & Inflammation',n:'Homocysteine',f:'Plasma Homocysteine',v:'7.2',u:'&#181;mol/L',c:'&#8595; 2.4 from Day 0 (9.6) &#8212; Improved',w:'An amino acid that, when elevated, signals impaired methylation &#8212; a fundamental cellular process.',y:'Linked to cardiovascular risk, cognitive decline, and dementia. Heavily reliant on adequate folate, B12, and B6.',l:'Leafy greens (folate), eggs and lean proteins (B12), and the Kcal Core sachet\'s full B-vitamin spectrum drive methylation efficiency.'},total_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'Total Cholesterol',f:'Total Cholesterol',v:'4.9',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (5.0) &#8212; Stable',w:'All cholesterol circulating in the bloodstream &#8212; LDL, HDL, and VLDL fractions combined.',y:'On its own, a blunt instrument. Its role is as the context marker for a complete lipid profile.',l:'Movement here is a downstream consequence of changes in LDL, HDL, and triglycerides.'},ldl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'LDL Cholesterol',f:'Low-Density Lipoprotein Cholesterol',v:'2.4',u:'mmol/L',c:'&#8595; 0.5 from Day 0 (2.9) &#8212; Improved',w:'Low-density lipoprotein &#8212; the cholesterol particles that carry cholesterol into artery walls.',y:'A primary driver of atherosclerosis when elevated. Paired with ApoB, gives the most complete cardiovascular risk picture.',l:'Reduction in saturated fat, increase in soluble fibre, and elimination of trans fats and ultra-processed foods.'},hdl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'HDL Cholesterol',f:'High-Density Lipoprotein Cholesterol',v:'1.1',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (1.2) &#8212; Needs Review',w:'High-density lipoprotein &#8212; the cholesterol particles that transport cholesterol back to the liver for clearance.',y:'Inversely correlated with cardiovascular risk. The Triglyceride-to-HDL ratio is one of the strongest single predictors of cardiometabolic health.',l:'Healthy fats (12.5% allocation), movement, and elimination of refined carbohydrates all support HDL.'},triglycerides:{s:'Lipids, Cardiovascular & Inflammation',n:'Triglycerides',f:'Triglycerides',v:'0.82',u:'mmol/L',c:'&#8595; 0.48 from Day 0 (1.30) &#8212; Improved',w:'Circulating fats heavily influenced by recent dietary intake &#8212; particularly refined carbohydrates.',y:'The fastest-moving lipid marker on any panel. Can drop dramatically within weeks of a clean diet.',l:'Elimination of refined carbohydrates and added sugars is the single most effective lever &#8212; the entire Kcal plate is built around it.'},alt:{s:'Liver & Organ Function',n:'ALT',f:'Alanine Aminotransferase',v:'18',u:'U/L',c:'&#8595; 14 from Day 0 (32) &#8212; Improved',w:'A liver enzyme released when liver cells are stressed or damaged.',y:'Commonly elevated by modern processed diets, alcohol, and excess fructose.',l:'Elimination of refined fructose, ultra-processed foods, and seed oils, combined with high-fibre greens, allows the liver to clear stored fat.'},ggt:{s:'Liver & Organ Function',n:'GGT',f:'Gamma-Glutamyl Transferase',v:'14',u:'U/L',c:'&#8595; 12 from Day 0 (26) &#8212; Improved',w:'A liver enzyme exquisitely sensitive to oxidative stress and liver fat accumulation.',y:'One of the most responsive markers in any nutritional intervention. Strong independent predictor of cardiovascular and metabolic risk.',l:'Cruciferous vegetables directly support the liver\'s glutathione production. The Kcal Core sachet\'s antioxidant complex adds further support.'},vitamin_d:{s:'Micronutrients, Aging & Hormones',n:'Vitamin D',f:'25-Hydroxyvitamin D',v:'118',u:'nmol/L',c:'&#8593; 46 from Day 0 (72) &#8212; Improved',w:'Serum 25-hydroxyvitamin D &#8212; the storage form of this foundational pro-hormone.',y:'Regulates immune function, bone density, cardiovascular health, and longevity pathways.',l:'Oily fish, eggs, and the Kcal Core sachet\'s vitamin D dose bring deficient clients into the optimal range within 90 days.'},vitamin_b12:{s:'Micronutrients, Aging & Hormones',n:'Vitamin B12',f:'Serum Vitamin B12 (Cobalamin)',v:'488',u:'pmol/L',c:'&#8593; 112 from Day 0 (376) &#8212; Improved',w:'Serum B12 &#8212; an essential cofactor for energy production, red blood cell formation, and methylation.',y:'Deficiency is increasingly common in plant-leaning diets, adults over 40, and people on long-term acid-suppressing medications.',l:'Lean proteins, eggs, and the Kcal Core sachet\'s methylated B12 ensure clean, bioavailable B12 intake every day.'},ferritin:{s:'Micronutrients, Aging & Hormones',n:'Ferritin',f:'Serum Ferritin',v:'88',u:'ng/mL',c:'&#8595; 4 from Day 0 (92) &#8212; Stable',w:'The stored form of iron in the body.',y:'Both extremes are problematic. Low ferritin drives systemic fatigue, poor exercise recovery, and hair loss.',l:'Iron-rich greens, lean red meat (men\'s plan), and vitamin-C-rich fruits and vegetables optimise iron status without overshooting.'},tsh:{s:'Micronutrients, Aging & Hormones',n:'TSH',f:'Thyroid Stimulating Hormone',v:'4.8',u:'mIU/L',c:'&#8593; 1.4 from Day 0 (3.4) &#8212; Outside reference range &#8212; Physician referral recommended',w:'The pituitary gland\'s signal to the thyroid &#8212; the body\'s master control on metabolic rate.',y:'Thyroid function controls metabolic rate, body composition, energy, cognition, and mood.',l:'Included as a foundational screen. An abnormal reading triggers a referral to a physician.'},igf_1:{s:'Micronutrients, Aging & Hormones',n:'IGF-1',f:'Insulin-like Growth Factor 1',v:'182',u:'ng/mL',c:'&#8593; 28 from Day 0 (154) &#8212; Improved',w:'A hormone that mediates the effects of growth hormone &#8212; a primary longevity pathway tracker.',y:'Reflects amino acid intake, protein quality, sleep depth, and overall caloric load.',l:'The 25% protein allocation across every meal, combined with the sleep-catalyst evening macro ratio, supports IGF-1 into the optimal range.'}};
-function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');document.querySelectorAll('.nav-item,.mobnav-item').forEach(b=>b.classList.remove('active'));const a=document.getElementById('nav-'+n),m=document.getElementById('mnav-'+n);if(a)a.classList.add('active');if(m)m.classList.add('active');}
+const MD={hba1c:{s:'Metabolic & Glycemic',n:'HbA1c',f:'Glycated Haemoglobin',v:'5.1',u:'%',c:'&#8595; 0.4 from Day 0 (5.5%) &#8212; Improved',w:'The average blood sugar level over the previous 90 days, captured as the percentage of haemoglobin bound by glucose.',y:'The single most stable measure of metabolic ageing. Elevated levels accelerate glycation &#8212; the silent chemical reaction that stiffens blood vessels, dulls skin, and damages brain tissue.',l:'The 50/25/12.5/12.5 plate keeps blood glucose stable across every meal. No refined sugar, no high-glycaemic spikes.'},fasting_insulin:{s:'Metabolic & Glycemic',n:'Fasting Insulin',f:'Fasting Insulin',v:'6.2',u:'&#181;IU/mL',c:'&#8595; 3.1 from Day 0 (9.3) &#8212; Improved',w:'How much insulin the pancreas is producing in the fasted state &#8212; a direct measure of how hard the body is working to keep blood sugar normal.',y:'The earliest clinical warning sign of metabolic dysfunction. Rises years before fasting glucose moves.',l:'Combined with fasting glucose to calculate HOMA-IR. Sustained low-glycaemic intake reduces pancreatic load.'},fasting_glucose:{s:'Metabolic & Glycemic',n:'Fasting Glucose',f:'Fasting Plasma Glucose',v:'4.8',u:'mmol/L',c:'&#8595; 0.4 from Day 0 (5.2) &#8212; Improved',w:'Blood sugar concentration after an overnight fast.',y:'Standard reference for glycaemic control. Paired with fasting insulin gives HOMA-IR, the gold-standard calculation for insulin resistance.',l:'Sustained reduction from the cumulative effect of stable, low-glycaemic meals across 90 days.'},uric_acid:{s:'Metabolic & Glycemic',n:'Uric Acid',f:'Serum Uric Acid',v:'318',u:'&#181;mol/L',c:'&#8595; 52 from Day 0 (370) &#8212; Improved',w:'A by-product of purine and fructose metabolism circulating in the bloodstream.',y:'Highly responsive to diet &#8212; especially refined sugar, alcohol, and processed meat. An independent driver of metabolic syndrome.',l:'Eliminating refined fructose, processed meats, and alcohol typically drops uric acid within weeks.'},apob:{s:'Lipids, Cardiovascular & Inflammation',n:'ApoB',f:'Apolipoprotein B',v:'0.74',u:'g/L',c:'&#8595; 0.12 from Day 0 (0.86) &#8212; Improved',w:'The absolute count of atherogenic particles in the blood &#8212; every particle capable of building plaque inside an artery wall.',y:'The modern longevity standard for cardiovascular risk. More predictive than LDL cholesterol alone.',l:'Reduction in refined carbs, saturated fat moderation, and high fibre intake all converge to lower ApoB.'},hs_crp:{s:'Lipids, Cardiovascular & Inflammation',n:'hs-CRP',f:'High-Sensitivity C-Reactive Protein',v:'0.6',u:'mg/L',c:'&#8595; 0.8 from Day 0 (1.4) &#8212; Improved',w:'The level of systemic, low-grade inflammation in the body.',y:'Chronic inflammation is the unifying mechanism behind cardiovascular disease, cancer, neurodegeneration, and accelerated biological ageing.',l:'The 50% greens base, omega-3-rich proteins, and elimination of inflammatory ingredients cool systemic inflammation.'},homocysteine:{s:'Lipids, Cardiovascular & Inflammation',n:'Homocysteine',f:'Plasma Homocysteine',v:'7.2',u:'&#181;mol/L',c:'&#8595; 2.4 from Day 0 (9.6) &#8212; Improved',w:'An amino acid that, when elevated, signals impaired methylation &#8212; a fundamental cellular process.',y:'Linked to cardiovascular risk, cognitive decline, and dementia. Heavily reliant on adequate folate, B12, and B6.',l:'Leafy greens (folate), eggs and lean proteins (B12), and the Kcal Core sachet\'s B-vitamin spectrum drive methylation efficiency.'},total_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'Total Cholesterol',f:'Total Cholesterol',v:'4.9',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (5.0) &#8212; Stable',w:'All cholesterol circulating in the bloodstream &#8212; LDL, HDL, and VLDL fractions combined.',y:'On its own, a blunt instrument. Its role is as the context marker for a complete lipid profile.',l:'Movement here is a downstream consequence of changes in LDL, HDL, and triglycerides.'},ldl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'LDL Cholesterol',f:'Low-Density Lipoprotein Cholesterol',v:'2.4',u:'mmol/L',c:'&#8595; 0.5 from Day 0 (2.9) &#8212; Improved',w:'Low-density lipoprotein &#8212; the cholesterol particles that carry cholesterol into artery walls.',y:'A primary driver of atherosclerosis when elevated. Paired with ApoB, gives the most complete cardiovascular risk picture.',l:'Reduction in saturated fat, increase in soluble fibre, and elimination of trans fats and ultra-processed foods.'},hdl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'HDL Cholesterol',f:'High-Density Lipoprotein Cholesterol',v:'1.1',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (1.2) &#8212; Needs Review',w:'High-density lipoprotein &#8212; the cholesterol particles that transport cholesterol back to the liver for clearance.',y:'Inversely correlated with cardiovascular risk. The Triglyceride-to-HDL ratio is one of the strongest single predictors of cardiometabolic health.',l:'Healthy fats (12.5% allocation), movement, and elimination of refined carbohydrates all support HDL.'},triglycerides:{s:'Lipids, Cardiovascular & Inflammation',n:'Triglycerides',f:'Triglycerides',v:'0.82',u:'mmol/L',c:'&#8595; 0.48 from Day 0 (1.30) &#8212; Improved',w:'Circulating fats heavily influenced by recent dietary intake &#8212; particularly refined carbohydrates.',y:'The fastest-moving lipid marker on any panel. Can drop dramatically within weeks of a clean diet.',l:'Elimination of refined carbohydrates and added sugars is the single most effective lever.'},alt:{s:'Liver & Organ Function',n:'ALT',f:'Alanine Aminotransferase',v:'18',u:'U/L',c:'&#8595; 14 from Day 0 (32) &#8212; Improved',w:'A liver enzyme released when liver cells are stressed or damaged.',y:'Commonly elevated by modern processed diets, alcohol, and excess fructose.',l:'Elimination of refined fructose, ultra-processed foods, and seed oils, combined with high-fibre greens, allows the liver to clear stored fat.'},ggt:{s:'Liver & Organ Function',n:'GGT',f:'Gamma-Glutamyl Transferase',v:'14',u:'U/L',c:'&#8595; 12 from Day 0 (26) &#8212; Improved',w:'A liver enzyme exquisitely sensitive to oxidative stress and liver fat accumulation.',y:'One of the most responsive markers in any nutritional intervention. Strong independent predictor of cardiovascular and metabolic risk.',l:'Cruciferous vegetables directly support the liver\'s glutathione production. The Kcal Core sachet\'s antioxidant complex adds further support.'},vitamin_d:{s:'Micronutrients, Aging & Hormones',n:'Vitamin D',f:'25-Hydroxyvitamin D',v:'118',u:'nmol/L',c:'&#8593; 46 from Day 0 (72) &#8212; Improved',w:'Serum 25-hydroxyvitamin D &#8212; the storage form of this foundational pro-hormone.',y:'Regulates immune function, bone density, cardiovascular health, and longevity pathways.',l:'Oily fish, eggs, and the Kcal Core sachet\'s vitamin D dose bring deficient clients into the optimal range within 90 days.'},vitamin_b12:{s:'Micronutrients, Aging & Hormones',n:'Vitamin B12',f:'Serum Vitamin B12 (Cobalamin)',v:'488',u:'pmol/L',c:'&#8593; 112 from Day 0 (376) &#8212; Improved',w:'Serum B12 &#8212; an essential cofactor for energy production, red blood cell formation, and methylation.',y:'Deficiency is increasingly common in plant-leaning diets, adults over 40, and people on long-term acid-suppressing medications.',l:'Lean proteins, eggs, and the Kcal Core sachet\'s methylated B12 ensure clean, bioavailable B12 intake every day.'},ferritin:{s:'Micronutrients, Aging & Hormones',n:'Ferritin',f:'Serum Ferritin',v:'88',u:'ng/mL',c:'&#8595; 4 from Day 0 (92) &#8212; Stable',w:'The stored form of iron in the body.',y:'Both extremes are problematic. Low ferritin drives systemic fatigue, poor exercise recovery, and hair loss.',l:'Iron-rich greens, lean red meat (men\'s plan), and vitamin-C-rich foods optimise iron status without overshooting.'},tsh:{s:'Micronutrients, Aging & Hormones',n:'TSH',f:'Thyroid Stimulating Hormone',v:'4.8',u:'mIU/L',c:'&#8593; 1.4 from Day 0 (3.4) &#8212; Outside reference range',w:'The pituitary gland\'s signal to the thyroid &#8212; the body\'s master control on metabolic rate.',y:'Thyroid function controls metabolic rate, body composition, energy, cognition, and mood.',l:'Included as a foundational screen. An abnormal reading triggers a referral to a physician.'},igf_1:{s:'Micronutrients, Aging & Hormones',n:'IGF-1',f:'Insulin-like Growth Factor 1',v:'182',u:'ng/mL',c:'&#8593; 28 from Day 0 (154) &#8212; Improved',w:'A hormone that mediates the effects of growth hormone &#8212; a primary longevity pathway tracker.',y:'Reflects amino acid intake, protein quality, sleep depth, and overall caloric load.',l:'The 25% protein allocation across every meal, combined with the sleep-catalyst evening macro ratio, supports IGF-1 into the optimal range.'}};
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');document.querySelectorAll('.nav-btn,.mobnav-btn').forEach(b=>b.classList.remove('active'));const a=document.getElementById('nav-'+n),m=document.getElementById('mnav-'+n);if(a)a.classList.add('active');if(m)m.classList.add('active');}
 function openDetail(id){const d=MD[id];if(!d)return;document.getElementById('dp-sys').innerHTML=d.s;document.getElementById('dp-name').textContent=d.n;document.getElementById('dp-full').textContent=d.f;document.getElementById('dp-val').textContent=d.v;document.getElementById('dp-unit').innerHTML=d.u;document.getElementById('dp-chg').innerHTML=d.c;document.getElementById('dp-what').innerHTML=d.w;document.getElementById('dp-why').innerHTML=d.y;document.getElementById('dp-lever').innerHTML=d.l;document.getElementById('doverlay').classList.add('open');}
 function closeDet(e){if(e.target===document.getElementById('doverlay'))closeDetBtn();}
 function closeDetBtn(){document.getElementById('doverlay').classList.remove('open');}
