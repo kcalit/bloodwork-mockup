@@ -1,907 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Bloodwork — Kcal App Mockup</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: #0a0908; color: rgba(255,255,255,0.95); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kcal Longevity — Blood Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #144735;
+    --green-light: #1a5c46;
+    --mint: #A3DAD6;
+    --mint-bg: #f0faf9;
+    --white: #ffffff;
+    --near-black: #282829;
+    --grey: #D1D3D4;
+    --grey-mid: #9ca3af;
+    --grey-light: #f5f5f5;
+    --review: #dc2626;
+    --review-bg: #fef2f2;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 12px rgba(20,71,53,0.08);
+    --shadow-md: 0 4px 24px rgba(20,71,53,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--grey-light); color: var(--near-black); min-height: 100vh; display: flex; }
 
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  /* Sidebar */
+  .sidebar { width: 72px; background: var(--green); display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 4px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+  .sidebar-logo { width: 40px; height: 40px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .nav-item { width: 48px; height: 48px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 3px; color: rgba(255,255,255,0.55); font-size: 9px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; transition: all 0.2s; border: none; background: transparent; font-family: 'Nunito', sans-serif; }
+  .nav-item:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: rgba(255,255,255,0.15); color: var(--white); }
+  .nav-item svg { width: 20px; height: 20px; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideRight { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  /* Main */
+  .main { margin-left: 72px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
-    /* ── Layout ── */
-    .app { display: flex; min-height: 100vh; background: radial-gradient(ellipse at top, #14110f 0%, #0a0908 50%, #050403 100%); position: relative; overflow: hidden; }
-    .noise { position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  /* Topbar */
+  .topbar { background: var(--white); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--grey); position: sticky; top: 0; z-index: 50; }
+  .topbar-title { font-size: 20px; font-weight: 800; color: var(--green); }
+  .topbar-subtitle { font-size: 13px; color: var(--grey-mid); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .btn-primary { background: var(--green); color: var(--white); border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--green-light); }
+  .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
+  .btn-outline:hover { background: var(--mint-bg); }
 
-    /* ── Sidebar ── */
-    .sidebar { width: 80px; background: rgba(0,0,0,0.4); border-right: 1px solid rgba(255,255,255,0.04); display: flex; flex-direction: column; align-items: center; padding: 24px 0; position: sticky; top: 0; height: 100vh; z-index: 10; flex-shrink: 0; }
-    .sidebar-logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #c9a86a, #8c7548); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(201,168,106,0.3); margin-bottom: 32px; }
-    .nav-btn { width: 44px; height: 44px; margin-bottom: 8px; background: transparent; border: 1px solid transparent; border-radius: 12px; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; position: relative; }
-    .nav-btn:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8); }
-    .nav-btn.active { background: rgba(201,168,106,0.15); border-color: rgba(201,168,106,0.3); color: #c9a86a; }
-    .nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .nav-tooltip { position: absolute; left: 56px; background: rgba(20,17,15,0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 10px; font-size: 11px; font-family: 'JetBrains Mono', monospace; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s; color: rgba(255,255,255,0.8); }
-    .nav-btn:hover .nav-tooltip { opacity: 1; }
+  .content { padding: 28px 32px; flex: 1; }
+  .screen { display: none; }
+  .screen.active { display: block; }
 
-    /* ── Main ── */
-    .main { flex: 1; position: relative; z-index: 1; padding: 40px 48px 80px; overflow-x: hidden; animation: fadeIn 0.3s ease; }
+  /* Summary tiles */
+  .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .summary-tile { background: var(--white); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); border-top: 4px solid var(--mint); }
+  .summary-tile.hl { border-top-color: var(--green); }
+  .tile-sys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--grey-mid); margin-bottom: 8px; }
+  .tile-nums { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+  .tile-big { font-size: 32px; font-weight: 800; color: var(--green); }
+  .tile-of { font-size: 14px; color: var(--grey-mid); }
+  .tile-lbl { font-size: 12px; font-weight: 700; }
+  .tile-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+  .bi { background: var(--mint-bg); color: var(--green); }
+  .bs { background: #f3f4f6; color: var(--grey-mid); }
+  .br { background: var(--review-bg); color: var(--review); }
 
-    /* ── Screen management ── */
-    .screen { display: none; }
-    .screen.active { display: block; animation: fadeIn 0.25s ease; }
+  /* Overall banner */
+  .overall-banner { background: var(--green); color: var(--white); border-radius: var(--radius); padding: 20px 28px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; }
+  .banner-left { display: flex; align-items: center; gap: 16px; }
+  .banner-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .banner-big { font-size: 24px; font-weight: 800; }
+  .banner-sub { font-size: 13px; opacity: 0.8; margin-top: 2px; }
+  .banner-right { display: flex; gap: 24px; }
+  .bstat { text-align: center; }
+  .bstat-n { font-size: 22px; font-weight: 800; }
+  .bstat-l { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* ── Typography ── */
-    .serif { font-family: 'Instrument Serif', Georgia, serif; }
-    .mono { font-family: 'JetBrains Mono', monospace; }
-    .label-xs { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .gold { color: #c9a86a; }
+  /* Section heading */
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; margin-top: 28px; }
+  .sec-title { font-size: 15px; font-weight: 800; color: var(--green); }
+  .sec-desc { font-size: 12px; color: var(--grey-mid); }
 
-    /* ── Dashboard ── */
-    .page-header { margin-bottom: 40px; }
-    .page-header .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
-    .page-header h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 56px; font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
-    .page-header p { font-size: 16px; color: rgba(255,255,255,0.55); margin-top: 10px; line-height: 1.5; max-width: 560px; }
+  /* Marker grid */
+  .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 8px; }
+  .mcard { background: var(--white); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; border-left: 4px solid transparent; }
+  .mcard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .mcard.si { border-left-color: var(--green); }
+  .mcard.ss { border-left-color: var(--grey); }
+  .mcard.sr { border-left-color: var(--review); }
+  .mcard.tsh { border-left-color: var(--review); background: var(--review-bg); }
+  .ctop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .clbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); }
+  .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+  .di { background: var(--green); }
+  .ds { background: var(--grey-mid); }
+  .dr { background: var(--review); }
+  .cvrow { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+  .cval { font-size: 26px; font-weight: 800; }
+  .cunit { font-size: 12px; color: var(--grey-mid); font-weight: 600; }
+  .cchg { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: auto; }
+  .ci { background: var(--mint-bg); color: var(--green); }
+  .cr { background: var(--review-bg); color: var(--review); }
+  .cs { background: #f3f4f6; color: var(--grey-mid); }
 
-    /* ── Stats row ── */
-    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; margin-bottom: 40px; }
-    .stat-cell { padding: 24px 28px; background: #0c0a09; }
-    .stat-cell .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
-    .stat-cell .value { font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 300; letter-spacing: -0.02em; }
+  /* Range bar */
+  .rbar { margin-top: 10px; }
+  .rlbls { display: flex; justify-content: space-between; font-size: 10px; color: var(--grey-mid); margin-bottom: 4px; }
+  .rtrack { height: 6px; background: #e5e7eb; border-radius: 3px; position: relative; overflow: visible; }
+  .ropt { position: absolute; top: 0; height: 100%; background: var(--mint); border-radius: 3px; }
+  .rm { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--green); border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.2); transform: translateX(-50%); z-index: 2; }
+  .rm.d0 { background: var(--grey-mid); }
+  .rleg { display: flex; gap: 12px; margin-top: 6px; }
+  .rli { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--grey-mid); }
+  .ldot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ── Category filter ── */
-    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
-    .filter-chip { padding: 7px 14px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.6); }
-    .filter-chip:hover { border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .filter-chip.active { background: rgba(201,168,106,0.12); border-color: rgba(201,168,106,0.35); color: #c9a86a; }
+  /* TSH alert */
+  .tsh-banner { background: var(--review-bg); border: 1px solid #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--review); font-weight: 700; margin-top: 8px; display: flex; align-items: center; gap: 8px; }
 
-    /* ── Card grid ── */
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .marker-card { background: rgba(28,25,23,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; }
-    .marker-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.5; }
-    .marker-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-    .marker-card .cat-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); opacity: 0.7; margin-bottom: 6px; }
-    .marker-card .marker-name { font-family: 'Instrument Serif', Georgia, serif; font-size: 18px; color: rgba(255,255,255,0.95); line-height: 1.1; letter-spacing: -0.01em; }
-    .marker-card .marker-value { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 300; color: var(--accent); letter-spacing: -0.02em; line-height: 1; margin: 12px 0 4px; }
-    .marker-card .marker-unit { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  /* Derived */
+  .dgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 8px; }
+  .dcard { background: var(--mint-bg); border-radius: var(--radius-sm); padding: 18px 20px; border: 1px solid var(--mint); }
+  .dlbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--green); margin-bottom: 6px; }
+  .dval { font-size: 28px; font-weight: 800; color: var(--green); }
+  .dunit { font-size: 12px; color: var(--grey-mid); font-weight: 600; margin-left: 4px; }
+  .dtgt { font-size: 11px; color: var(--grey-mid); margin-top: 4px; }
+  .dint { font-size: 11px; color: var(--near-black); margin-top: 6px; line-height: 1.5; }
 
-    /* ── Range bar ── */
-    .range-bar-wrap { margin-top: 14px; }
-    .range-track { position: relative; height: 6px; background: rgba(255,255,255,0.04); border-radius: 999px; }
-    .range-ref { position: absolute; height: 100%; background: rgba(255,255,255,0.08); border-radius: 999px; }
-    .range-opt { position: absolute; height: 100%; background: rgba(132,169,140,0.35); border-radius: 999px; box-shadow: 0 0 12px rgba(132,169,140,0.2); }
-    .range-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; border-radius: 50%; border: 2px solid #1c1917; }
-    .range-labels { display: flex; justify-content: space-between; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
-    .range-labels .opt-label { color: rgba(132,169,140,0.8); }
+  /* Compare */
+  .cmp-hdr { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .cmp-card { background: var(--white); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); text-align: center; }
+  .cmp-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--grey-mid); margin-bottom: 6px; }
+  .cmp-date { font-size: 18px; font-weight: 800; color: var(--green); }
+  .cmp-sub { font-size: 12px; color: var(--grey-mid); }
+  .ctbl { width: 100%; border-collapse: collapse; }
+  .ctbl th { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--grey); }
+  .ctbl th:not(:first-child) { text-align: center; }
+  .ctbl td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .ctbl td:not(:first-child) { text-align: center; font-weight: 700; }
+  .ctbl tr:hover td { background: var(--grey-light); }
+  .csec td { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--green); background: var(--mint-bg) !important; padding: 6px 12px; }
+  .dgi { color: var(--green); }
+  .dgr { color: var(--review); }
+  .dgs { color: var(--grey-mid); }
 
-    /* ── Upload screen ── */
-    .upload-zone { border: 2px dashed rgba(255,255,255,0.1); border-radius: 20px; padding: 64px 40px; text-align: center; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; background: rgba(28,25,23,0.3); }
-    .upload-zone:hover, .upload-zone.drag-over { border-color: rgba(201,168,106,0.4); background: rgba(201,168,106,0.04); }
-    .upload-zone .upload-icon { width: 64px; height: 64px; border-radius: 16px; background: rgba(201,168,106,0.1); border: 1px solid rgba(201,168,106,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
-    .upload-zone h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 28px; font-weight: 400; margin-bottom: 10px; }
-    .upload-zone p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 360px; margin: 0 auto; }
-    .upload-btn { margin-top: 28px; padding: 14px 32px; background: linear-gradient(135deg, #c9a86a, #8c7548); border: none; border-radius: 12px; color: #0a0908; font-size: 14px; font-weight: 600; cursor: pointer; letter-spacing: 0.02em; transition: opacity 0.2s; }
-    .upload-btn:hover { opacity: 0.9; }
+  /* Upload */
+  .upzone { background: var(--white); border: 2px dashed var(--mint); border-radius: var(--radius); padding: 60px 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 28px; }
+  .upzone:hover { border-color: var(--green); background: var(--mint-bg); }
+  .upicon { width: 64px; height: 64px; background: var(--mint-bg); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .uptitle { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 8px; }
+  .upsub { font-size: 13px; color: var(--grey-mid); margin-bottom: 20px; }
+  .upsteps { display: flex; gap: 0; margin-top: 24px; justify-content: center; }
+  .upstep { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; max-width: 160px; opacity: 0.4; transition: opacity 0.3s; }
+  .upstep.active { opacity: 1; }
+  .stepn { width: 32px; height: 32px; border-radius: 50%; background: var(--mint-bg); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; border: 2px solid var(--mint); }
+  .upstep.active .stepn { background: var(--green); color: var(--white); border-color: var(--green); }
+  .steplbl { font-size: 11px; font-weight: 700; text-align: center; }
+  .stepcon { width: 40px; height: 2px; background: var(--grey); margin-top: 15px; }
+  .upitem { background: var(--white); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); margin-bottom: 10px; cursor: pointer; transition: box-shadow 0.2s; }
+  .upitem:hover { box-shadow: var(--shadow-md); }
+  .upficon { width: 40px; height: 40px; background: var(--mint-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .upfname { font-size: 14px; font-weight: 700; }
+  .upfmeta { font-size: 12px; color: var(--grey-mid); margin-top: 2px; }
+  .upfst { margin-left: auto; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: var(--mint-bg); color: var(--green); }
 
-    /* ── Processing state ── */
-    .processing-card { background: rgba(28,25,23,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 48px 40px; text-align: center; }
-    .processing-card .spinner { width: 48px; height: 48px; border: 2px solid rgba(201,168,106,0.2); border-top-color: #c9a86a; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px; }
-    .processing-card h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 28px; margin-bottom: 8px; }
-    .processing-card p { font-size: 14px; color: rgba(255,255,255,0.5); }
-    .progress-steps { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; text-align: left; max-width: 320px; margin-left: auto; margin-right: auto; }
-    .progress-step { display: flex; align-items: center; gap: 14px; font-size: 13px; color: rgba(255,255,255,0.5); }
-    .progress-step.done { color: rgba(255,255,255,0.85); }
-    .progress-step.active { color: #c9a86a; }
-    .step-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; }
-    .step-icon.done { background: rgba(132,169,140,0.2); border: 1px solid rgba(132,169,140,0.4); color: #84a98c; }
-    .step-icon.active { background: rgba(201,168,106,0.15); border: 1px solid rgba(201,168,106,0.4); color: #c9a86a; animation: pulse 1.2s ease infinite; }
-    .step-icon.pending { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); }
+  /* Detail panel */
+  .doverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 200; display: none; align-items: center; justify-content: flex-end; }
+  .doverlay.open { display: flex; }
+  .dpanel { width: 420px; height: 100vh; background: var(--white); overflow-y: auto; padding: 32px 28px; box-shadow: -4px 0 32px rgba(0,0,0,0.15); position: relative; }
+  .dclose { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: var(--grey-light); border: none; cursor: pointer; font-size: 18px; color: var(--grey-mid); font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center; }
+  .dsys { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--mint); margin-bottom: 6px; }
+  .dname { font-size: 22px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
+  .dfull { font-size: 13px; color: var(--grey-mid); margin-bottom: 20px; }
+  .dvblock { background: var(--mint-bg); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 20px; }
+  .dv { font-size: 48px; font-weight: 800; color: var(--green); }
+  .dvunit { font-size: 16px; color: var(--grey-mid); font-weight: 600; }
+  .dvchg { font-size: 13px; font-weight: 700; margin-top: 4px; color: var(--grey-mid); }
+  .dsect { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--grey-mid); margin-bottom: 8px; margin-top: 20px; }
+  .dtxt { font-size: 13px; line-height: 1.7; }
+  .dlever { background: var(--green); color: var(--white); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 12px; line-height: 1.6; margin-top: 8px; }
+  .dlevtitle { font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.7; margin-bottom: 4px; }
 
-    /* ── Review screen ── */
-    .review-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
-    .back-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
-    .back-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
-    .back-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .confidence-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; }
-    .confidence-badge.high { background: rgba(132,169,140,0.15); border: 1px solid rgba(132,169,140,0.3); color: #84a98c; }
-    .confidence-badge.medium { background: rgba(212,165,116,0.15); border: 1px solid rgba(212,165,116,0.3); color: #d4a574; }
+  /* Mobile nav */
+  .mobnav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--grey); padding: 8px 0 12px; z-index: 100; }
+  .mobnav-inner { display: flex; justify-content: space-around; }
+  .mobnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; color: var(--grey-mid); font-size: 10px; font-weight: 700; text-transform: uppercase; border: none; background: transparent; font-family: 'Nunito', sans-serif; padding: 4px 12px; }
+  .mobnav-item.active { color: var(--green); }
+  .mobnav-item svg { width: 22px; height: 22px; }
 
-    .review-table { width: 100%; border-collapse: collapse; }
-    .review-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .review-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; vertical-align: middle; }
-    .review-table tr:last-child td { border-bottom: none; }
-    .review-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .review-table .marker-col { font-family: 'Instrument Serif', Georgia, serif; font-size: 16px; color: rgba(255,255,255,0.9); }
-    .review-table .value-col { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 400; }
-    .review-table .unit-col { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.4); }
-    .review-table .ref-col { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.35); }
-    .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
-    .status-pill.optimal { background: rgba(132,169,140,0.15); color: #84a98c; }
-    .status-pill.elevated { background: rgba(201,135,106,0.15); color: #c9876a; }
-    .status-pill.suboptimal { background: rgba(212,165,116,0.15); color: #d4a574; }
-
-    /* ── Detail panel ── */
-    .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: flex-end; animation: fadeIn 0.2s ease; }
-    .detail-panel { width: 100%; max-width: 680px; height: 100vh; background: linear-gradient(180deg, #14110f 0%, #0c0a09 100%); border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; padding: 36px 40px; animation: slideRight 0.3s ease; }
-    .detail-panel .close-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .detail-panel .close-btn:hover { background: rgba(255,255,255,0.08); }
-    .detail-panel .close-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .big-value { font-family: 'JetBrains Mono', monospace; font-size: 72px; font-weight: 200; letter-spacing: -0.04em; line-height: 1; }
-    .trend-chart { height: 200px; background: rgba(28,25,23,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; display: flex; align-items: flex-end; gap: 4px; overflow: hidden; }
-    .trend-bar { flex: 1; border-radius: 4px 4px 0 0; transition: height 0.5s ease; min-height: 4px; }
-    .section-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 28px 0; }
-    .insight-block { background: rgba(201,168,106,0.06); border: 1px solid rgba(201,168,106,0.15); border-radius: 14px; padding: 20px; }
-    .insight-block .headline { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: 16px; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 10px; }
-    .insight-block .action { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #c9a86a; display: flex; align-items: center; gap: 6px; }
-
-    /* ── Reports list ── */
-    .reports-list { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
-    .report-row { display: flex; align-items: center; gap: 16px; padding: 18px 20px; background: rgba(28,25,23,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; cursor: pointer; transition: all 0.2s; }
-    .report-row:hover { border-color: rgba(255,255,255,0.1); background: rgba(28,25,23,0.8); }
-    .report-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(201,168,106,0.1); border: 1px solid rgba(201,168,106,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .report-icon svg { width: 18px; height: 18px; stroke: #c9a86a; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .report-meta { flex: 1; min-width: 0; }
-    .report-meta .report-date { font-family: 'Instrument Serif', Georgia, serif; font-size: 18px; color: rgba(255,255,255,0.9); }
-    .report-meta .report-lab { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
-    .report-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.4); }
-    .chevron-icon { width: 16px; height: 16px; stroke: rgba(255,255,255,0.3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    /* ── AI Insights banner ── */
-    .insights-banner { background: linear-gradient(135deg, rgba(201,168,106,0.08), rgba(140,117,72,0.04)); border: 1px solid rgba(201,168,106,0.2); border-radius: 16px; padding: 20px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 16px; }
-    .insights-banner svg { width: 20px; height: 20px; stroke: #c9a86a; fill: none; stroke-width: 1.8; flex-shrink: 0; }
-    .insights-banner .text { flex: 1; }
-    .insights-banner .text strong { font-size: 14px; color: rgba(255,255,255,0.9); display: block; margin-bottom: 2px; }
-    .insights-banner .text span { font-size: 13px; color: rgba(255,255,255,0.5); }
-    .insights-banner .gen-btn { padding: 9px 18px; background: linear-gradient(135deg, #c9a86a, #8c7548); border: none; border-radius: 10px; color: #0a0908; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-
-    /* ── Compare screen ── */
-    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,0.04); border-radius: 14px; overflow: hidden; margin-bottom: 28px; }
-    .compare-cell { background: #0c0a09; padding: 20px 24px; }
-    .compare-cell .date-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-    .compare-cell .date-val { font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; color: rgba(255,255,255,0.9); }
-    .delta-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; background: rgba(28,25,23,0.5); border: 1px solid rgba(255,255,255,0.04); margin-bottom: 8px; }
-    .delta-row .delta-name { flex: 1; font-size: 14px; color: rgba(255,255,255,0.8); }
-    .delta-row .delta-vals { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: rgba(255,255,255,0.6); }
-    .delta-row .delta-change { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 2px 8px; border-radius: 999px; }
-    .delta-row .delta-change.up { background: rgba(201,135,106,0.15); color: #c9876a; }
-    .delta-row .delta-change.down { background: rgba(132,169,140,0.15); color: #84a98c; }
-    .delta-row .delta-change.neutral { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); }
-
-    /* ── Mobile bottom nav ── */
-    .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: rgba(10,9,8,0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.06); justify-content: space-around; align-items: center; z-index: 50; padding: 0 4px; }
-    .bottom-nav-btn { flex: 1; height: 48px; background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; transition: color 0.2s; }
-    .bottom-nav-btn.active { color: #c9a86a; }
-    .bottom-nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .bottom-nav-btn span { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
-
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .bottom-nav { display: flex; }
-      .main { padding: 24px 16px 88px; }
-      .page-header h1 { font-size: 36px; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .card-grid { grid-template-columns: 1fr; gap: 12px; }
-      .detail-panel { max-width: 100%; border-left: none; padding: 24px 20px 88px; }
-      .big-value { font-size: 56px; }
-      .compare-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── Utility ── */
-    .flex { display: flex; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; }
-    .gap-8 { gap: 8px; }
-    .gap-12 { gap: 12px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .mt-32 { margin-top: 32px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mb-32 { margin-bottom: 32px; }
-    .section-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
-    .card-wrap { background: rgba(28,25,23,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; }
-
-    /* ── Upload new design improvements ── */
-    .upload-history-row { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-    .upload-history-row h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; font-weight: 400; letter-spacing: -0.02em; }
-    .upload-history-row .count-badge { padding: 4px 12px; background: rgba(201,168,106,0.1); border: 1px solid rgba(201,168,106,0.2); border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #c9a86a; }
-
-    /* ── Pill tabs ── */
-    .pill-tabs { display: flex; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 4px; margin-bottom: 28px; width: fit-content; }
-    .pill-tab { padding: 8px 16px; border-radius: 9px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border: none; background: transparent; color: rgba(255,255,255,0.5); }
-    .pill-tab.active { background: rgba(201,168,106,0.15); color: #c9a86a; }
-  </style>
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding-bottom: 70px; }
+    .mobnav { display: block; }
+    .topbar { padding: 14px 16px; }
+    .content { padding: 16px; }
+    .summary-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .mgrid { grid-template-columns: 1fr; }
+    .dgrid { grid-template-columns: 1fr; }
+    .cmp-hdr { grid-template-columns: 1fr; }
+    .dpanel { width: 100%; }
+    .overall-banner { flex-direction: column; gap: 16px; }
+    .banner-right { justify-content: center; }
+    .topbar-right .btn-outline { display: none; }
+  }
+</style>
 </head>
 <body>
-<div class="app">
-  <div class="noise"></div>
 
-  <!-- ── Sidebar ── -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <!-- Kcal / flame icon placeholder -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0908" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 6c0 3-2 4-2 7h4c0-3-2-4-2-7z"/><path d="M10 16h4"/></svg>
-    </div>
-    <button class="nav-btn" onclick="showScreen('dashboard')" id="nav-dashboard">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span class="nav-tooltip">Dashboard</span>
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <svg viewBox="0 0 40 40" fill="none"><polygon points="20,3 37,12 37,28 20,37 3,28 3,12" fill="#144735"/><text x="20" y="26" text-anchor="middle" fill="white" font-family="Nunito,sans-serif" font-weight="800" font-size="14">k</text></svg>
+  </div>
+  <button class="nav-item active" onclick="showScreen('dashboard')" id="nav-dashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Panel
+  </button>
+  <button class="nav-item" onclick="showScreen('compare')" id="nav-compare">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+    Compare
+  </button>
+  <button class="nav-item" onclick="showScreen('upload')" id="nav-upload">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Upload
+  </button>
+</nav>
+
+<nav class="mobnav">
+  <div class="mobnav-inner">
+    <button class="mobnav-item active" onclick="showScreen('dashboard')" id="mnav-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Panel
     </button>
-    <button class="nav-btn active" onclick="showScreen('bloodwork')" id="nav-bloodwork">
-      <svg viewBox="0 0 24 24"><path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z"/></svg>
-      <span class="nav-tooltip">Bloodwork</span>
+    <button class="mobnav-item" onclick="showScreen('compare')" id="mnav-compare">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+      Compare
     </button>
-    <button class="nav-btn" onclick="showScreen('compare')" id="nav-compare">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      <span class="nav-tooltip">Compare</span>
+    <button class="mobnav-item" onclick="showScreen('upload')" id="mnav-upload">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload
     </button>
-    <button class="nav-btn" onclick="showScreen('upload')" id="nav-upload">
-      <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-      <span class="nav-tooltip">Upload PDF</span>
-    </button>
-    <div style="flex:1"></div>
-    <button class="nav-btn" onclick="showScreen('settings')" id="nav-settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span class="nav-tooltip">Settings</span>
-    </button>
-  </aside>
+  </div>
+</nav>
 
-  <!-- ── Main content ── -->
-  <main class="main">
-
-    <!-- ════════════════════════════════════════
-         SCREEN: BLOODWORK DASHBOARD
-    ════════════════════════════════════════ -->
-    <div class="screen active" id="screen-bloodwork">
-
-      <!-- AI Insights banner -->
-      <div class="insights-banner">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <div class="text">
-          <strong>AI Analysis Ready</strong>
-          <span>3 markers need your attention · Last analysed May 8, 2026</span>
-        </div>
-        <button class="gen-btn">View Insights</button>
-      </div>
-
-      <!-- Page header -->
-      <div class="page-header">
-        <div class="eyebrow">Personal Health Intelligence</div>
-        <h1 class="serif">Your <em style="color:#c9a86a;font-style:italic">Bloodwork</em></h1>
-        <p>54 biomarkers tracked across 2 panels. Tap any marker to explore trends and AI insights.</p>
-      </div>
-
-      <!-- Stats row -->
-      <div class="stats-row mb-32">
-        <div class="stat-cell">
-          <div class="label">Biomarkers</div>
-          <div class="value" style="color:rgba(255,255,255,0.9)">54</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">Optimal</div>
-          <div class="value" style="color:#84a98c">38</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">Suboptimal</div>
-          <div class="value" style="color:#d4a574">10</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">Elevated</div>
-          <div class="value" style="color:#c9876a">6</div>
-        </div>
-      </div>
-
-      <!-- Pill tabs -->
-      <div class="pill-tabs">
-        <button class="pill-tab active" onclick="filterCat(this,'all')">All</button>
-        <button class="pill-tab" onclick="filterCat(this,'lipids')">Lipids</button>
-        <button class="pill-tab" onclick="filterCat(this,'metabolic')">Metabolic</button>
-        <button class="pill-tab" onclick="filterCat(this,'hormones')">Hormones</button>
-        <button class="pill-tab" onclick="filterCat(this,'cbc')">CBC</button>
-        <button class="pill-tab" onclick="filterCat(this,'vitamins')">Vitamins</button>
-      </div>
-
-      <!-- Marker cards grid -->
-      <div class="card-grid" id="marker-grid">
-
-        <!-- LDL -->
-        <div class="marker-card" style="--accent:#c9876a" onclick="openDetail('ldl')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Cardio &amp; Lipids</div>
-              <div class="marker-name">LDL Cholesterol</div>
-            </div>
-            <div class="status-dot" style="background:#c9876a;box-shadow:0 0 8px #c9876a40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value">142</span>
-            <span class="marker-unit">mg/dL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:0%;width:100%"></div>
-              <div class="range-opt" style="left:40%;width:30%"></div>
-              <div class="range-dot" style="left:92%;background:#c9876a;box-shadow:0 0 16px #c9876a80"></div>
-            </div>
-            <div class="range-labels"><span>0</span><span class="opt-label">OPT 40–70</span><span>100</span></div>
-          </div>
-        </div>
-
-        <!-- HDL -->
-        <div class="marker-card" style="--accent:#d4a574" onclick="openDetail('hdl')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Cardio &amp; Lipids</div>
-              <div class="marker-name">HDL Cholesterol</div>
-            </div>
-            <div class="status-dot" style="background:#d4a574;box-shadow:0 0 8px #d4a57440"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#d4a574">42</span>
-            <span class="marker-unit">mg/dL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:10%;width:80%"></div>
-              <div class="range-opt" style="left:30%;width:45%"></div>
-              <div class="range-dot" style="left:18%;background:#d4a574;box-shadow:0 0 16px #d4a57480"></div>
-            </div>
-            <div class="range-labels"><span>40</span><span class="opt-label">OPT 50–80</span><span>100</span></div>
-          </div>
-        </div>
-
-        <!-- Glucose -->
-        <div class="marker-card" style="--accent:#84a98c" onclick="openDetail('glucose')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Metabolic</div>
-              <div class="marker-name">Fasting Glucose</div>
-            </div>
-            <div class="status-dot" style="background:#84a98c;box-shadow:0 0 8px #84a98c40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#84a98c">90</span>
-            <span class="marker-unit">mg/dL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:5%;width:80%"></div>
-              <div class="range-opt" style="left:5%;width:62%"></div>
-              <div class="range-dot" style="left:62%;background:#84a98c;box-shadow:0 0 16px #84a98c80"></div>
-            </div>
-            <div class="range-labels"><span>70</span><span class="opt-label">OPT 70–90</span><span>100</span></div>
-          </div>
-        </div>
-
-        <!-- HbA1c -->
-        <div class="marker-card" style="--accent:#84a98c" onclick="openDetail('hba1c')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Metabolic</div>
-              <div class="marker-name">HbA1c</div>
-            </div>
-            <div class="status-dot" style="background:#84a98c;box-shadow:0 0 8px #84a98c40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#84a98c">4.9</span>
-            <span class="marker-unit">%</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:2%;width:85%"></div>
-              <div class="range-opt" style="left:8%;width:40%"></div>
-              <div class="range-dot" style="left:55%;background:#84a98c;box-shadow:0 0 16px #84a98c80"></div>
-            </div>
-            <div class="range-labels"><span>4.0</span><span class="opt-label">OPT 4.5–5.2</span><span>5.7</span></div>
-          </div>
-        </div>
-
-        <!-- Testosterone -->
-        <div class="marker-card" style="--accent:#c9876a" onclick="openDetail('total_t')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Hormones</div>
-              <div class="marker-name">Total Testosterone</div>
-            </div>
-            <div class="status-dot" style="background:#c9876a;box-shadow:0 0 8px #c9876a40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value">978</span>
-            <span class="marker-unit">ng/dL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:5%;width:80%"></div>
-              <div class="range-opt" style="left:57%;width:30%"></div>
-              <div class="range-dot" style="left:96%;background:#c9876a;box-shadow:0 0 16px #c9876a80"></div>
-            </div>
-            <div class="range-labels"><span>230</span><span class="opt-label">OPT 600–900</span><span>858</span></div>
-          </div>
-        </div>
-
-        <!-- Vitamin D -->
-        <div class="marker-card" style="--accent:#d4a574" onclick="openDetail('vitamin_d')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Vitamins</div>
-              <div class="marker-name">Vitamin D (25-OH)</div>
-            </div>
-            <div class="status-dot" style="background:#d4a574;box-shadow:0 0 8px #d4a57440"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#d4a574">39</span>
-            <span class="marker-unit">ng/mL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:5%;width:90%"></div>
-              <div class="range-opt" style="left:28%;width:42%"></div>
-              <div class="range-dot" style="left:13%;background:#d4a574;box-shadow:0 0 16px #d4a57480"></div>
-            </div>
-            <div class="range-labels"><span>30</span><span class="opt-label">OPT 50–80</span><span>100</span></div>
-          </div>
-        </div>
-
-        <!-- Ferritin -->
-        <div class="marker-card" style="--accent:#84a98c" onclick="openDetail('ferritin')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Iron</div>
-              <div class="marker-name">Ferritin</div>
-            </div>
-            <div class="status-dot" style="background:#84a98c;box-shadow:0 0 8px #84a98c40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#84a98c">152</span>
-            <span class="marker-unit">ng/mL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:2%;width:95%"></div>
-              <div class="range-opt" style="left:5%;width:30%"></div>
-              <div class="range-dot" style="left:32%;background:#84a98c;box-shadow:0 0 16px #84a98c80"></div>
-            </div>
-            <div class="range-labels"><span>30</span><span class="opt-label">OPT 50–150</span><span>400</span></div>
-          </div>
-        </div>
-
-        <!-- TSH -->
-        <div class="marker-card" style="--accent:#84a98c" onclick="openDetail('tsh')">
-          <div class="flex-between mb-16">
-            <div>
-              <div class="cat-label">Thyroid</div>
-              <div class="marker-name">TSH</div>
-            </div>
-            <div class="status-dot" style="background:#84a98c;box-shadow:0 0 8px #84a98c40"></div>
-          </div>
-          <div class="flex" style="align-items:baseline;gap:8px">
-            <span class="marker-value" style="color:#84a98c">2.42</span>
-            <span class="marker-unit">µIU/mL</span>
-          </div>
-          <div class="range-bar-wrap">
-            <div class="range-track">
-              <div class="range-ref" style="left:2%;width:90%"></div>
-              <div class="range-opt" style="left:7%;width:33%"></div>
-              <div class="range-dot" style="left:45%;background:#84a98c;box-shadow:0 0 16px #84a98c80"></div>
-            </div>
-            <div class="range-labels"><span>0.55</span><span class="opt-label">OPT 0.8–2.0</span><span>4.78</span></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SCREEN: UPLOAD
-    ════════════════════════════════════════ -->
-    <div class="screen" id="screen-upload">
-      <div class="page-header">
-        <div class="eyebrow">Add New Data</div>
-        <h1 class="serif">Upload <em style="color:#c9a86a;font-style:italic">Blood Panel</em></h1>
-      </div>
-
-      <!-- Upload zone -->
-      <div class="upload-zone mb-32" id="upload-zone" onclick="simulateUpload()">
-        <div class="upload-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a86a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <h2>Drop your blood panel PDF here</h2>
-        <p>Or tap to browse files. Supports PDF and image formats. Claude AI extracts all values automatically.</p>
-        <button class="upload-btn" onclick="event.stopPropagation();simulateUpload()">Choose File</button>
-      </div>
-
-      <!-- Processing state (hidden by default) -->
-      <div class="processing-card" id="processing-card" style="display:none">
-        <div class="spinner"></div>
-        <h2 class="serif">Analysing your panel…</h2>
-        <p>Claude is reading your PDF and extracting biomarker values</p>
-        <div class="progress-steps">
-          <div class="progress-step done" id="step1">
-            <div class="step-icon done">✓</div>
-            <span>PDF uploaded successfully</span>
-          </div>
-          <div class="progress-step active" id="step2">
-            <div class="step-icon active">◉</div>
-            <span>Extracting biomarker values…</span>
-          </div>
-          <div class="progress-step pending" id="step3">
-            <div class="step-icon pending">○</div>
-            <span>Matching to reference ranges</span>
-          </div>
-          <div class="progress-step pending" id="step4">
-            <div class="step-icon pending">○</div>
-            <span>Generating AI insights</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Past uploads -->
-      <div>
-        <div class="upload-history-row">
-          <h2 class="serif">Past Uploads</h2>
-          <span class="count-badge">2 panels</span>
-        </div>
-        <div class="reports-list">
-          <div class="report-row" onclick="showScreen('bloodwork')">
-            <div class="report-icon">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <div class="report-meta">
-              <div class="report-date">May 8, 2026</div>
-              <div class="report-lab">Micro Health Medical Lab · 54 markers</div>
-            </div>
-            <span class="report-count">54 markers</span>
-            <svg class="chevron-icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
-          <div class="report-row" onclick="showScreen('bloodwork')">
-            <div class="report-icon">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <div class="report-meta">
-              <div class="report-date">January 8, 2026</div>
-              <div class="report-lab">Micro Health Medical Lab · 50 markers</div>
-            </div>
-            <span class="report-count">50 markers</span>
-            <svg class="chevron-icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SCREEN: COMPARE
-    ════════════════════════════════════════ -->
-    <div class="screen" id="screen-compare">
-      <div class="page-header">
-        <div class="eyebrow">Jan 2026 → May 2026</div>
-        <h1 class="serif">What <em style="color:#c9a86a;font-style:italic">changed</em>?</h1>
-        <p>54 biomarkers compared between your two most recent panels.</p>
-      </div>
-
-      <!-- Summary -->
-      <div class="stats-row mb-32">
-        <div class="stat-cell">
-          <div class="label">Improved</div>
-          <div class="value" style="color:#84a98c">12</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">Unchanged</div>
-          <div class="value" style="color:rgba(255,255,255,0.6)">36</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">Worsened</div>
-          <div class="value" style="color:#c9876a">6</div>
-        </div>
-        <div class="stat-cell">
-          <div class="label">New Markers</div>
-          <div class="value" style="color:#d4a574">4</div>
-        </div>
-      </div>
-
-      <!-- Panel date selector -->
-      <div class="compare-grid mb-32">
-        <div class="compare-cell">
-          <div class="date-label">Earlier Panel</div>
-          <div class="date-val">January 8, 2026</div>
-        </div>
-        <div class="compare-cell">
-          <div class="date-label">Latest Panel</div>
-          <div class="date-val">May 8, 2026</div>
-        </div>
-      </div>
-
-      <!-- Filter -->
-      <div class="filter-row mb-24">
-        <button class="filter-chip active">All Changes</button>
-        <button class="filter-chip">Improved</button>
-        <button class="filter-chip">Worsened</button>
-      </div>
-
-      <!-- Delta rows -->
-      <div>
-        <div class="section-title">Cardio &amp; Lipids</div>
-        <div class="delta-row">
-          <div class="delta-name">LDL Cholesterol</div>
-          <div class="delta-vals">142 → 142</div>
-          <div class="delta-change neutral">0%</div>
-        </div>
-        <div class="delta-row">
-          <div class="delta-name">Total Cholesterol</div>
-          <div class="delta-vals">222 → 221</div>
-          <div class="delta-change down">−0.5%</div>
-        </div>
-        <div class="delta-row">
-          <div class="delta-name">HDL Cholesterol</div>
-          <div class="delta-vals">42 → 42</div>
-          <div class="delta-change neutral">0%</div>
-        </div>
-        <div class="section-title mt-24">Metabolic</div>
-        <div class="delta-row">
-          <div class="delta-name">Uric Acid</div>
-          <div class="delta-vals">5.7 → 6.1</div>
-          <div class="delta-change up">+7%</div>
-        </div>
-        <div class="delta-row">
-          <div class="delta-name">Creatinine</div>
-          <div class="delta-vals">1.25 → 1.25</div>
-          <div class="delta-change neutral">0%</div>
-        </div>
-        <div class="section-title mt-24">Hormones</div>
-        <div class="delta-row">
-          <div class="delta-name">Estradiol (E2)</div>
-          <div class="delta-vals">120.69 → 120.69</div>
-          <div class="delta-change neutral">0%</div>
-        </div>
-        <div class="delta-row">
-          <div class="delta-name">Potassium</div>
-          <div class="delta-vals">4.4 → 5.1</div>
-          <div class="delta-change up">+16%</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SCREEN: SETTINGS (placeholder)
-    ════════════════════════════════════════ -->
-    <div class="screen" id="screen-settings">
-      <div class="page-header">
-        <h1 class="serif">Settings</h1>
-      </div>
-      <div class="card-wrap mb-24">
-        <div class="section-title">Anthropic API Key</div>
-        <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:16px">Required for PDF extraction and AI analysis. Stored locally in your browser only.</p>
-        <div class="flex gap-8">
-          <input type="password" placeholder="sk-ant-..." style="flex:1;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:rgba(255,255,255,0.9);font-size:14px;font-family:'JetBrains Mono',monospace" />
-          <button style="padding:12px 20px;background:linear-gradient(135deg,#c9a86a,#8c7548);border:none;border-radius:10px;color:#0a0908;font-size:13px;font-weight:600;cursor:pointer">Save</button>
-        </div>
-      </div>
-      <div class="card-wrap">
-        <div class="section-title">Data Management</div>
-        <div class="flex" style="flex-direction:column;gap:8px;margin-top:8px">
-          <button style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:rgba(255,255,255,0.9);cursor:pointer;font-size:13px;text-align:left;display:flex;justify-content:space-between;align-items:center">
-            <span>Reset to sample data</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
-          </button>
-          <button style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#c9876a;cursor:pointer;font-size:13px;text-align:left;display:flex;justify-content:space-between;align-items:center">
-            <span>Clear all data</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SCREEN: DASHBOARD (placeholder)
-    ════════════════════════════════════════ -->
-    <div class="screen" id="screen-dashboard">
-      <div class="page-header">
-        <div class="eyebrow">Kcal App</div>
-        <h1 class="serif">Good morning, <em style="color:#c9a86a;font-style:italic">Mark</em></h1>
-        <p>This is where the main Kcal dashboard will live. Bloodwork is a tab within this app.</p>
-      </div>
-      <div class="card-wrap" style="text-align:center;padding:60px 40px">
-        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:22px;color:rgba(255,255,255,0.6);margin-bottom:8px">Kcal Dashboard</div>
-        <div style="font-size:14px;color:rgba(255,255,255,0.4)">Calories, macros, and nutrition tracking will appear here.</div>
-        <button onclick="showScreen('bloodwork')" style="margin-top:24px;padding:12px 24px;background:rgba(201,168,106,0.12);border:1px solid rgba(201,168,106,0.3);border-radius:12px;color:#c9a86a;cursor:pointer;font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;text-transform:uppercase">→ View Bloodwork</button>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ── Mobile bottom nav ── -->
-  <nav class="bottom-nav">
-    <button class="bottom-nav-btn" onclick="showScreen('dashboard')" id="bnav-dashboard">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Home</span>
-    </button>
-    <button class="bottom-nav-btn active" onclick="showScreen('bloodwork')" id="bnav-bloodwork">
-      <svg viewBox="0 0 24 24"><path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z"/></svg>
-      <span>Blood</span>
-    </button>
-    <button class="bottom-nav-btn" onclick="showScreen('compare')" id="bnav-compare">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      <span>Compare</span>
-    </button>
-    <button class="bottom-nav-btn" onclick="showScreen('upload')" id="bnav-upload">
-      <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-      <span>Upload</span>
-    </button>
-    <button class="bottom-nav-btn" onclick="showScreen('settings')" id="bnav-settings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span>Settings</span>
-    </button>
-  </nav>
-</div>
-
-<!-- ── Detail panel overlay ── -->
-<div class="detail-overlay" id="detail-overlay" style="display:none" onclick="closeDetail()">
-  <div class="detail-panel" onclick="event.stopPropagation()">
-    <div class="flex-between mb-32">
-      <div style="flex:1;padding-right:16px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#c9876a;margin-bottom:8px" id="detail-cat">Cardio &amp; Lipids</div>
-        <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:38px;color:rgba(255,255,255,0.98);line-height:1.1;letter-spacing:-0.02em" id="detail-name">LDL Cholesterol</h2>
-      </div>
-      <button class="close-btn" onclick="closeDetail()">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-
-    <div class="flex" style="align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:32px">
-      <span class="big-value" style="color:#c9876a" id="detail-value">142</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,0.4)" id="detail-unit">mg/dL</span>
-      <div style="margin-left:auto">
-        <div class="status-pill elevated" id="detail-status-pill">
-          <div class="status-dot" style="background:#c9876a;width:6px;height:6px"></div>
-          Elevated
-        </div>
-      </div>
-    </div>
-
-    <!-- Range bar (full) -->
-    <div class="mb-32">
-      <div class="section-title">Reference Range</div>
-      <div class="range-track" style="height:8px">
-        <div class="range-ref" style="left:0%;width:100%"></div>
-        <div class="range-opt" style="left:40%;width:30%"></div>
-        <div class="range-dot" style="left:92%;background:#c9876a;box-shadow:0 0 16px #c9876a80;width:14px;height:14px"></div>
-      </div>
-      <div class="range-labels mt-8"><span>0</span><span class="opt-label">OPTIMAL 40–70</span><span>100</span></div>
-    </div>
-
-    <!-- Trend chart -->
-    <div class="mb-32">
-      <div class="flex-between mb-16">
-        <div class="section-title" style="margin-bottom:0">Trend</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em">2 panels</div>
-      </div>
-      <div class="trend-chart">
-        <div style="width:100%;display:flex;align-items:flex-end;gap:40px;padding:0 20px">
-          <div style="flex:1;text-align:center">
-            <div style="background:#c9876a;border-radius:4px 4px 0 0;height:120px;opacity:0.7;margin-bottom:8px"></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4)">Jan '26</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#c9876a;margin-top:4px">142</div>
-          </div>
-          <div style="flex:1;text-align:center">
-            <div style="background:#c9876a;border-radius:4px 4px 0 0;height:120px;margin-bottom:8px"></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4)">May '26</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#c9876a;margin-top:4px">142</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <!-- AI Insight -->
-    <div class="mb-24">
-      <div class="section-title">AI Insight</div>
-      <div class="insight-block">
-        <div class="headline">"LDL remains persistently elevated at 142 mg/dL — well above the optimal ceiling of 70. Combined with your ApoB of 113.5, cardiovascular risk warrants attention."</div>
-        <div class="action">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          Consider dietary intervention or discuss with your clinician
-        </div>
-      </div>
-    </div>
-
-    <!-- What this measures -->
+<div class="main">
+  <div class="topbar">
     <div>
-      <div class="section-title">What this measures</div>
-      <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7">Low-density lipoprotein cholesterol is the primary carrier of cholesterol in the blood. Elevated LDL is a key risk factor for atherosclerosis and cardiovascular disease. Optimal levels depend on overall cardiovascular risk profile.</p>
+      <div class="topbar-title">Kcal Longevity Panel</div>
+      <div class="topbar-subtitle">18-Marker Blood Panel &middot; Day 0 &rarr; Day 90</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-outline" onclick="showScreen('compare')">Compare Results</button>
+      <button class="btn-primary" onclick="showScreen('upload')">Upload PDF</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="content screen active" id="screen-dashboard">
+    <div class="overall-banner">
+      <div class="banner-left">
+        <div class="banner-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <div>
+          <div class="banner-big">14 of 18 markers improved</div>
+          <div class="banner-sub">Day 90 vs Day 0 &middot; Kcal Longevity Plan</div>
+        </div>
+      </div>
+      <div class="banner-right">
+        <div class="bstat"><div class="bstat-n">14</div><div class="bstat-l">Improved</div></div>
+        <div class="bstat"><div class="bstat-n">2</div><div class="bstat-l">Stable</div></div>
+        <div class="bstat"><div class="bstat-n">2</div><div class="bstat-l">Review</div></div>
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-tile hl">
+        <div class="tile-sys">Metabolic &amp; Glycemic</div>
+        <div class="tile-nums"><span class="tile-big">4</span><span class="tile-of">/ 4</span></div>
+        <div class="tile-lbl">markers improved</div>
+        <div class="tile-badges"><span class="badge bi">4 Improved</span></div>
+      </div>
+      <div class="summary-tile">
+        <div class="tile-sys">Lipids &amp; Cardiovascular</div>
+        <div class="tile-nums"><span class="tile-big">5</span><span class="tile-of">/ 7</span></div>
+        <div class="tile-lbl">markers improved</div>
+        <div class="tile-badges"><span class="badge bi">5 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
+      </div>
+      <div class="summary-tile">
+        <div class="tile-sys">Liver &amp; Organ Function</div>
+        <div class="tile-nums"><span class="tile-big">2</span><span class="tile-of">/ 2</span></div>
+        <div class="tile-lbl">markers improved</div>
+        <div class="tile-badges"><span class="badge bi">2 Improved</span></div>
+      </div>
+      <div class="summary-tile">
+        <div class="tile-sys">Micronutrients &amp; Hormones</div>
+        <div class="tile-nums"><span class="tile-big">3</span><span class="tile-of">/ 5</span></div>
+        <div class="tile-lbl">markers improved</div>
+        <div class="tile-badges"><span class="badge bi">3 Improved</span><span class="badge bs">1 Stable</span><span class="badge br">1 Review</span></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Metabolic &amp; Glycemic</div><div class="sec-desc">How efficiently the body manages blood sugar and energy. The engine room of biological ageing.</div></div>
+    <div class="mgrid">
+      <div class="mcard si" onclick="openDetail('hba1c')">
+        <div class="ctop"><span class="clbl">HbA1c</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">5.1</span><span class="cunit">%</span><span class="cchg ci">&#8595; 0.4 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>Low</span><span>Longevity &lt;5.4%</span><span>Ref &lt;5.7%</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:54%"></div><div class="rm d0" style="left:55%"></div><div class="rm" style="left:51%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.5%</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 5.1%</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('fasting_insulin')">
+        <div class="ctop"><span class="clbl">Fasting Insulin</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">6.2</span><span class="cunit">&#181;IU/mL</span><span class="cchg ci">&#8595; 3.1 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>2</span><span>Longevity 2&#8211;8</span><span>25</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:26%"></div><div class="rm d0" style="left:37%"></div><div class="rm" style="left:18%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 9.3</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 6.2</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('fasting_glucose')">
+        <div class="ctop"><span class="clbl">Fasting Glucose</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">4.8</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.4 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>3.9</span><span>Longevity 4.4&#8211;5.2</span><span>5.6</span></div><div class="rtrack"><div class="ropt" style="left:29%;width:38%"></div><div class="rm d0" style="left:62%"></div><div class="rm" style="left:53%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.2</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 4.8</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('uric_acid')">
+        <div class="ctop"><span class="clbl">Uric Acid</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">318</span><span class="cunit">&#181;mol/L</span><span class="cchg ci">&#8595; 52 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;360</span><span>420</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:86%"></div><div class="rm d0" style="left:88%"></div><div class="rm" style="left:76%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 370</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 318</div></div></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Lipids, Cardiovascular &amp; Inflammation</div><div class="sec-desc">Complete picture of cardiovascular risk and the chronic inflammation that drives it.</div></div>
+    <div class="mgrid">
+      <div class="mcard si" onclick="openDetail('apob')">
+        <div class="ctop"><span class="clbl">ApoB</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">0.74</span><span class="cunit">g/L</span><span class="cchg ci">&#8595; 0.12 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;0.8</span><span>0.9</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:89%"></div><div class="rm d0" style="left:96%"></div><div class="rm" style="left:82%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 0.86</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.74</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('hs_crp')">
+        <div class="ctop"><span class="clbl">hs-CRP</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">0.6</span><span class="cunit">mg/L</span><span class="cchg ci">&#8595; 0.8 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;1.0</span><span>3+</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:33%"></div><div class="rm d0" style="left:47%"></div><div class="rm" style="left:20%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.4</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.6</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('homocysteine')">
+        <div class="ctop"><span class="clbl">Homocysteine</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">7.2</span><span class="cunit">&#181;mol/L</span><span class="cchg ci">&#8595; 2.4 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;8</span><span>10</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:80%"></div><div class="rm d0" style="left:96%"></div><div class="rm" style="left:72%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 9.6</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 7.2</div></div></div>
+      </div>
+      <div class="mcard ss" onclick="openDetail('total_cholesterol')">
+        <div class="ctop"><span class="clbl">Total Cholesterol</span><span class="cdot ds"></span></div>
+        <div class="cvrow"><span class="cval">4.9</span><span class="cunit">mmol/L</span><span class="cchg cs">&#8594; stable</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;5.2</span><span>6+</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:87%"></div><div class="rm d0" style="left:83%"></div><div class="rm" style="left:82%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 5.0</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 4.9</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('ldl_cholesterol')">
+        <div class="ctop"><span class="clbl">LDL Cholesterol</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">2.4</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.5 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;2.6</span><span>3.0</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:87%"></div><div class="rm d0" style="left:97%"></div><div class="rm" style="left:80%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 2.9</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 2.4</div></div></div>
+      </div>
+      <div class="mcard sr" onclick="openDetail('hdl_cholesterol')">
+        <div class="ctop"><span class="clbl">HDL Cholesterol</span><span class="cdot dr"></span></div>
+        <div class="cvrow"><span class="cval">1.1</span><span class="cunit">mmol/L</span><span class="cchg cr">&#8595; needs review</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &gt;1.3</span><span>2+</span></div><div class="rtrack"><div class="ropt" style="left:65%;width:35%"></div><div class="rm d0" style="left:60%"></div><div class="rm" style="left:55%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.2</div><div class="rli"><div class="ldot" style="background:var(--review)"></div>Day 90: 1.1</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('triglycerides')">
+        <div class="ctop"><span class="clbl">Triglycerides</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">0.82</span><span class="cunit">mmol/L</span><span class="cchg ci">&#8595; 0.48 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;1.0</span><span>1.7</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:59%"></div><div class="rm d0" style="left:77%"></div><div class="rm" style="left:48%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 1.30</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 0.82</div></div></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Liver &amp; Organ Function</div><div class="sec-desc">The liver registers diet quality first and recovers fastest under clean nutrition.</div></div>
+    <div class="mgrid">
+      <div class="mcard si" onclick="openDetail('alt')">
+        <div class="ctop"><span class="clbl">ALT</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">18</span><span class="cunit">U/L</span><span class="cchg ci">&#8595; 14 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;25</span><span>45</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:56%"></div><div class="rm d0" style="left:71%"></div><div class="rm" style="left:40%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 32</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 18</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('ggt')">
+        <div class="ctop"><span class="clbl">GGT</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">14</span><span class="cunit">U/L</span><span class="cchg ci">&#8595; 12 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>0</span><span>Target &lt;20</span><span>50</span></div><div class="rtrack"><div class="ropt" style="left:0%;width:40%"></div><div class="rm d0" style="left:52%"></div><div class="rm" style="left:28%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 26</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 14</div></div></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Micronutrients, Aging &amp; Hormones</div><div class="sec-desc">Foundational nutrients and hormones governing energy, mood, cognition, and recovery.</div></div>
+    <div class="mgrid">
+      <div class="mcard si" onclick="openDetail('vitamin_d')">
+        <div class="ctop"><span class="clbl">Vitamin D</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">118</span><span class="cunit">nmol/L</span><span class="cchg ci">&#8593; 46 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>75</span><span>Target 100&#8211;150</span><span>250</span></div><div class="rtrack"><div class="ropt" style="left:14%;width:43%"></div><div class="rm d0" style="left:8%"></div><div class="rm" style="left:25%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 72</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 118</div></div></div>
+      </div>
+      <div class="mcard si" onclick="openDetail('vitamin_b12')">
+        <div class="ctop"><span class="clbl">Vitamin B12</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">488</span><span class="cunit">pmol/L</span><span class="cchg ci">&#8593; 112 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>148</span><span>Target 400&#8211;664</span><span>664</span></div><div class="rtrack"><div class="ropt" style="left:49%;width:51%"></div><div class="rm d0" style="left:37%"></div><div class="rm" style="left:66%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 376</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 488</div></div></div>
+      </div>
+      <div class="mcard ss" onclick="openDetail('ferritin')">
+        <div class="ctop"><span class="clbl">Ferritin</span><span class="cdot ds"></span></div>
+        <div class="cvrow"><span class="cval">88</span><span class="cunit">ng/mL</span><span class="cchg cs">&#8594; stable</span></div>
+        <div class="rbar"><div class="rlbls"><span>30</span><span>Target 50&#8211;150</span><span>400</span></div><div class="rtrack"><div class="ropt" style="left:5%;width:32%"></div><div class="rm d0" style="left:18%"></div><div class="rm" style="left:16%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 92</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 88</div></div></div>
+      </div>
+      <div class="mcard tsh" onclick="openDetail('tsh')">
+        <div class="ctop"><span class="clbl">TSH</span><span class="cdot dr"></span></div>
+        <div class="cvrow"><span class="cval">4.8</span><span class="cunit">mIU/L</span><span class="cchg cr">&#8593; outside range</span></div>
+        <div class="rbar"><div class="rlbls"><span>0.4</span><span>Target 0.5&#8211;2.5</span><span>4.0</span></div><div class="rtrack"><div class="ropt" style="left:3%;width:57%"></div><div class="rm d0" style="left:82%"></div><div class="rm" style="left:100%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 3.4</div><div class="rli"><div class="ldot" style="background:var(--review)"></div>Day 90: 4.8</div></div></div>
+        <div class="tsh-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Physician referral recommended &#8212; TSH outside reference range</div>
+      </div>
+      <div class="mcard si" onclick="openDetail('igf_1')">
+        <div class="ctop"><span class="clbl">IGF-1</span><span class="cdot di"></span></div>
+        <div class="cvrow"><span class="cval">182</span><span class="cunit">ng/mL</span><span class="cchg ci">&#8593; 28 improved</span></div>
+        <div class="rbar"><div class="rlbls"><span>100</span><span>Target 150&#8211;220</span><span>250</span></div><div class="rtrack"><div class="ropt" style="left:33%;width:80%"></div><div class="rm d0" style="left:40%"></div><div class="rm" style="left:55%"></div></div><div class="rleg"><div class="rli"><div class="ldot" style="background:var(--grey-mid)"></div>Day 0: 154</div><div class="rli"><div class="ldot" style="background:var(--green)"></div>Day 90: 182</div></div></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Calculated Metrics</div><div class="sec-desc">Derived from the panel above &#8212; not additional blood draws.</div></div>
+    <div class="dgrid">
+      <div class="dcard"><div class="dlbl">HOMA-IR</div><div><span class="dval">1.33</span><span class="dunit">score</span></div><div class="dtgt">Longevity target: &lt;1.0 &middot; Reference: &lt;2.0</div><div class="dint">The single most reliable proxy for insulin sensitivity. Calculated as (Fasting Insulin &times; Fasting Glucose) &divide; 22.5. Day 0 was 2.14 &#8212; now below the reference threshold.</div></div>
+      <div class="dcard"><div class="dlbl">Triglyceride / HDL Ratio</div><div><span class="dval">0.75</span><span class="dunit">ratio</span></div><div class="dtgt">Longevity target: &lt;0.87 &middot; Reference: &lt;1.5</div><div class="dint">One of the strongest single predictors of cardiometabolic health. Calculated as Triglycerides &divide; HDL. Day 0 was 1.08 &#8212; now well within the longevity target.</div></div>
+      <div class="dcard"><div class="dlbl">Non-HDL Cholesterol</div><div><span class="dval">3.8</span><span class="dunit">mmol/L</span></div><div class="dtgt">Longevity target: &lt;2.6 &middot; Reference: &lt;3.4</div><div class="dint">Captures all atherogenic cholesterol in one number. Calculated as Total Cholesterol &minus; HDL. Day 0 was 3.8 &#8212; unchanged; improvement in LDL offset by HDL decline.</div></div>
+    </div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="content screen" id="screen-compare">
+    <div class="cmp-hdr">
+      <div class="cmp-card"><div class="cmp-lbl">Baseline Draw</div><div class="cmp-date">Day 0 &#8212; 13 Feb 2026</div><div class="cmp-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
+      <div class="cmp-card"><div class="cmp-lbl">Endpoint Draw</div><div class="cmp-date">Day 90 &#8212; 13 May 2026</div><div class="cmp-sub">18 markers &middot; Fasting &middot; Mobile nurse</div></div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;">
+      <table class="ctbl">
+        <thead><tr><th>Marker</th><th>Day 0</th><th>Day 90</th><th>Change</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr class="csec"><td colspan="5">Metabolic &amp; Glycemic</td></tr>
+          <tr><td>HbA1c (%)</td><td>5.5</td><td>5.1</td><td class="dgi">&#8595; 0.4</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Fasting Insulin (&#181;IU/mL)</td><td>9.3</td><td>6.2</td><td class="dgi">&#8595; 3.1</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Fasting Glucose (mmol/L)</td><td>5.2</td><td>4.8</td><td class="dgi">&#8595; 0.4</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Uric Acid (&#181;mol/L)</td><td>370</td><td>318</td><td class="dgi">&#8595; 52</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr class="csec"><td colspan="5">Lipids, Cardiovascular &amp; Inflammation</td></tr>
+          <tr><td>ApoB (g/L)</td><td>0.86</td><td>0.74</td><td class="dgi">&#8595; 0.12</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>hs-CRP (mg/L)</td><td>1.4</td><td>0.6</td><td class="dgi">&#8595; 0.8</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Homocysteine (&#181;mol/L)</td><td>9.6</td><td>7.2</td><td class="dgi">&#8595; 2.4</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Total Cholesterol (mmol/L)</td><td>5.0</td><td>4.9</td><td class="dgs">&#8595; 0.1</td><td><span class="badge bs">Stable</span></td></tr>
+          <tr><td>LDL Cholesterol (mmol/L)</td><td>2.9</td><td>2.4</td><td class="dgi">&#8595; 0.5</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>HDL Cholesterol (mmol/L)</td><td>1.2</td><td>1.1</td><td class="dgr">&#8595; 0.1</td><td><span class="badge br">Review</span></td></tr>
+          <tr><td>Triglycerides (mmol/L)</td><td>1.30</td><td>0.82</td><td class="dgi">&#8595; 0.48</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr class="csec"><td colspan="5">Liver &amp; Organ Function</td></tr>
+          <tr><td>ALT (U/L)</td><td>32</td><td>18</td><td class="dgi">&#8595; 14</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>GGT (U/L)</td><td>26</td><td>14</td><td class="dgi">&#8595; 12</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr class="csec"><td colspan="5">Micronutrients, Aging &amp; Hormones</td></tr>
+          <tr><td>Vitamin D (nmol/L)</td><td>72</td><td>118</td><td class="dgi">&#8593; 46</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Vitamin B12 (pmol/L)</td><td>376</td><td>488</td><td class="dgi">&#8593; 112</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Ferritin (ng/mL)</td><td>92</td><td>88</td><td class="dgs">&#8595; 4</td><td><span class="badge bs">Stable</span></td></tr>
+          <tr><td>TSH (mIU/L)</td><td>3.4</td><td>4.8</td><td class="dgr">&#8593; 1.4</td><td><span class="badge br">Review &#9877;</span></td></tr>
+          <tr><td>IGF-1 (ng/mL)</td><td>154</td><td>182</td><td class="dgi">&#8593; 28</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr class="csec"><td colspan="5">Calculated Metrics</td></tr>
+          <tr><td>HOMA-IR</td><td>2.14</td><td>1.33</td><td class="dgi">&#8595; 0.81</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Trig / HDL Ratio</td><td>1.08</td><td>0.75</td><td class="dgi">&#8595; 0.33</td><td><span class="badge bi">Improved</span></td></tr>
+          <tr><td>Non-HDL Cholesterol (mmol/L)</td><td>3.8</td><td>3.8</td><td class="dgs">0</td><td><span class="badge bs">Stable</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="content screen" id="screen-upload">
+    <div class="upzone" onclick="simulateUpload()">
+      <div class="upicon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="uptitle">Upload Blood Panel PDF</div>
+      <div class="upsub">Drag and drop your lab report, or click to choose a file.<br>Supports PDF, JPG, PNG &middot; Max 20 MB</div>
+      <button class="btn-primary" style="margin:0 auto;">Choose File</button>
+      <div class="upsteps">
+        <div class="upstep active" id="step-1"><div class="stepn">1</div><div class="steplbl">Upload PDF</div></div>
+        <div class="stepcon"></div>
+        <div class="upstep" id="step-2"><div class="stepn">2</div><div class="steplbl">AI Extraction</div></div>
+        <div class="stepcon"></div>
+        <div class="upstep" id="step-3"><div class="stepn">3</div><div class="steplbl">Validate Values</div></div>
+        <div class="stepcon"></div>
+        <div class="upstep" id="step-4"><div class="stepn">4</div><div class="steplbl">View Results</div></div>
+      </div>
+    </div>
+    <div class="sec-head"><div class="sec-title">Past Uploads</div></div>
+    <div class="upitem">
+      <div class="upficon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div><div class="upfname">Day_90_BloodPanel_May2026.pdf</div><div class="upfmeta">13 May 2026 &middot; 18 markers extracted &middot; Day 90</div></div>
+      <div class="upfst">Processed</div>
+    </div>
+    <div class="upitem">
+      <div class="upficon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#144735" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div><div class="upfname">Day_0_BloodPanel_Feb2026.pdf</div><div class="upfmeta">13 Feb 2026 &middot; 18 markers extracted &middot; Day 0 (Baseline)</div></div>
+      <div class="upfst">Processed</div>
     </div>
   </div>
 </div>
 
+<!-- DETAIL PANEL -->
+<div class="doverlay" id="doverlay" onclick="closeDet(event)">
+  <div class="dpanel">
+    <button class="dclose" onclick="closeDetBtn()">&#x2715;</button>
+    <div class="dsys" id="dp-sys"></div>
+    <div class="dname" id="dp-name"></div>
+    <div class="dfull" id="dp-full"></div>
+    <div class="dvblock">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--grey-mid);margin-bottom:4px;">Day 90 Value</div>
+      <div style="display:flex;align-items:baseline;gap:6px;"><span class="dv" id="dp-val"></span><span class="dvunit" id="dp-unit"></span></div>
+      <div class="dvchg" id="dp-chg"></div>
+    </div>
+    <div class="dsect">What it measures</div><div class="dtxt" id="dp-what"></div>
+    <div class="dsect">Why it matters</div><div class="dtxt" id="dp-why"></div>
+    <div class="dsect">Kcal Lever</div>
+    <div class="dlever"><div class="dlevtitle">How the plan moves this marker</div><div id="dp-lever"></div></div>
+  </div>
+</div>
+
 <script>
-  // ── Screen navigation ──
-  const screens = ['bloodwork','upload','compare','settings','dashboard'];
-  function showScreen(id) {
-    screens.forEach(s => {
-      document.getElementById('screen-' + s)?.classList.remove('active');
-      document.getElementById('nav-' + s)?.classList.remove('active');
-      document.getElementById('bnav-' + s)?.classList.remove('active');
-    });
-    document.getElementById('screen-' + id)?.classList.add('active');
-    document.getElementById('nav-' + id)?.classList.add('active');
-    document.getElementById('bnav-' + id)?.classList.add('active');
-  }
-
-  // ── Category filter ──
-  function filterCat(btn, cat) {
-    document.querySelectorAll('.pill-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // In real app this would filter cards; mockup just highlights
-  }
-
-  // ── Detail panel ──
-  function openDetail(id) {
-    document.getElementById('detail-overlay').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-  function closeDetail() {
-    document.getElementById('detail-overlay').style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  // ── Upload simulation ──
-  let uploadTimer = null;
-  function simulateUpload() {
-    const zone = document.getElementById('upload-zone');
-    const proc = document.getElementById('processing-card');
-    zone.style.display = 'none';
-    proc.style.display = 'block';
-
-    // Simulate steps
-    setTimeout(() => {
-      document.getElementById('step2').className = 'progress-step done';
-      document.getElementById('step2').querySelector('.step-icon').className = 'step-icon done';
-      document.getElementById('step2').querySelector('.step-icon').textContent = '✓';
-      document.getElementById('step3').className = 'progress-step active';
-      document.getElementById('step3').querySelector('.step-icon').className = 'step-icon active';
-      document.getElementById('step3').querySelector('.step-icon').textContent = '◉';
-    }, 1200);
-    setTimeout(() => {
-      document.getElementById('step3').className = 'progress-step done';
-      document.getElementById('step3').querySelector('.step-icon').className = 'step-icon done';
-      document.getElementById('step3').querySelector('.step-icon').textContent = '✓';
-      document.getElementById('step4').className = 'progress-step active';
-      document.getElementById('step4').querySelector('.step-icon').className = 'step-icon active';
-      document.getElementById('step4').querySelector('.step-icon').textContent = '◉';
-    }, 2400);
-    setTimeout(() => {
-      document.getElementById('step4').className = 'progress-step done';
-      document.getElementById('step4').querySelector('.step-icon').className = 'step-icon done';
-      document.getElementById('step4').querySelector('.step-icon').textContent = '✓';
-      proc.querySelector('.spinner').style.display = 'none';
-      proc.querySelector('h2').textContent = 'Analysis complete!';
-      proc.querySelector('p').textContent = '54 biomarkers extracted with high confidence.';
-      setTimeout(() => {
-        proc.style.display = 'none';
-        zone.style.display = 'block';
-        showScreen('bloodwork');
-      }, 1000);
-    }, 3600);
-  }
-
-  // ── Drag & drop visual ──
-  const zone = document.getElementById('upload-zone');
-  if (zone) {
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); simulateUpload(); });
-  }
+const MD={hba1c:{s:'Metabolic & Glycemic',n:'HbA1c',f:'Glycated Haemoglobin',v:'5.1',u:'%',c:'&#8595; 0.4 from Day 0 (5.5%) &#8212; Improved',w:'The average blood sugar level over the previous 90 days, captured as the percentage of haemoglobin bound by glucose.',y:'The single most stable measure of metabolic ageing. Elevated levels accelerate glycation &#8212; the silent chemical reaction that stiffens blood vessels, dulls skin, and damages brain tissue.',l:'The 50/25/12.5/12.5 plate keeps blood glucose stable across every meal. No refined sugar, no high-glycaemic spikes.'},fasting_insulin:{s:'Metabolic & Glycemic',n:'Fasting Insulin',f:'Fasting Insulin',v:'6.2',u:'&#181;IU/mL',c:'&#8595; 3.1 from Day 0 (9.3) &#8212; Improved',w:'How much insulin the pancreas is producing in the fasted state &#8212; a direct measure of how hard the body is working to keep blood sugar normal.',y:'The earliest clinical warning sign of metabolic dysfunction. Rises years &#8212; sometimes a decade &#8212; before fasting glucose moves.',l:'Combined with fasting glucose to calculate HOMA-IR. Sustained low-glycaemic intake reduces pancreatic load.'},fasting_glucose:{s:'Metabolic & Glycemic',n:'Fasting Glucose',f:'Fasting Plasma Glucose',v:'4.8',u:'mmol/L',c:'&#8595; 0.4 from Day 0 (5.2) &#8212; Improved',w:'Blood sugar concentration after an overnight fast.',y:'Standard reference for glycaemic control. Paired with fasting insulin gives HOMA-IR, the gold-standard calculation for insulin resistance.',l:'Sustained reduction from the cumulative effect of stable, low-glycaemic meals across 90 days.'},uric_acid:{s:'Metabolic & Glycemic',n:'Uric Acid',f:'Serum Uric Acid',v:'318',u:'&#181;mol/L',c:'&#8595; 52 from Day 0 (370) &#8212; Improved',w:'A by-product of purine and fructose metabolism circulating in the bloodstream.',y:'Highly responsive to diet &#8212; especially refined sugar, alcohol, processed meat. An independent driver of metabolic syndrome and cardiovascular risk.',l:'Eliminating refined fructose, processed meats, and alcohol typically drops uric acid within weeks.'},apob:{s:'Lipids, Cardiovascular & Inflammation',n:'ApoB',f:'Apolipoprotein B',v:'0.74',u:'g/L',c:'&#8595; 0.12 from Day 0 (0.86) &#8212; Improved',w:'The absolute count of atherogenic particles in the blood &#8212; every particle capable of building plaque inside an artery wall.',y:'The modern longevity standard for cardiovascular risk. More predictive than LDL cholesterol alone.',l:'Reduction in refined carbs, saturated fat moderation, and high fibre intake all converge to lower ApoB.'},hs_crp:{s:'Lipids, Cardiovascular & Inflammation',n:'hs-CRP',f:'High-Sensitivity C-Reactive Protein',v:'0.6',u:'mg/L',c:'&#8595; 0.8 from Day 0 (1.4) &#8212; Improved',w:'The level of systemic, low-grade inflammation in the body.',y:'Chronic inflammation is the unifying mechanism behind cardiovascular disease, cancer, neurodegeneration, and accelerated biological ageing.',l:'The 50% greens base, omega-3-rich proteins, and elimination of inflammatory ingredients are designed specifically to cool systemic inflammation.'},homocysteine:{s:'Lipids, Cardiovascular & Inflammation',n:'Homocysteine',f:'Plasma Homocysteine',v:'7.2',u:'&#181;mol/L',c:'&#8595; 2.4 from Day 0 (9.6) &#8212; Improved',w:'An amino acid that, when elevated, signals impaired methylation &#8212; a fundamental cellular process.',y:'Linked to cardiovascular risk, cognitive decline, and dementia. Heavily reliant on adequate folate, B12, and B6.',l:'Leafy greens (folate), eggs and lean proteins (B12), and the Kcal Core sachet\'s full B-vitamin spectrum drive methylation efficiency.'},total_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'Total Cholesterol',f:'Total Cholesterol',v:'4.9',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (5.0) &#8212; Stable',w:'All cholesterol circulating in the bloodstream &#8212; LDL, HDL, and VLDL fractions combined.',y:'On its own, a blunt instrument. Its role is as the context marker for a complete lipid profile.',l:'Movement here is a downstream consequence of changes in LDL, HDL, and triglycerides.'},ldl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'LDL Cholesterol',f:'Low-Density Lipoprotein Cholesterol',v:'2.4',u:'mmol/L',c:'&#8595; 0.5 from Day 0 (2.9) &#8212; Improved',w:'Low-density lipoprotein &#8212; the cholesterol particles that carry cholesterol into artery walls.',y:'A primary driver of atherosclerosis when elevated. Paired with ApoB, gives the most complete cardiovascular risk picture.',l:'Reduction in saturated fat, increase in soluble fibre, and elimination of trans fats and ultra-processed foods.'},hdl_cholesterol:{s:'Lipids, Cardiovascular & Inflammation',n:'HDL Cholesterol',f:'High-Density Lipoprotein Cholesterol',v:'1.1',u:'mmol/L',c:'&#8595; 0.1 from Day 0 (1.2) &#8212; Needs Review',w:'High-density lipoprotein &#8212; the cholesterol particles that transport cholesterol back to the liver for clearance.',y:'Inversely correlated with cardiovascular risk. The Triglyceride-to-HDL ratio is one of the strongest single predictors of cardiometabolic health.',l:'Healthy fats (12.5% allocation), movement, and elimination of refined carbohydrates all support HDL.'},triglycerides:{s:'Lipids, Cardiovascular & Inflammation',n:'Triglycerides',f:'Triglycerides',v:'0.82',u:'mmol/L',c:'&#8595; 0.48 from Day 0 (1.30) &#8212; Improved',w:'Circulating fats heavily influenced by recent dietary intake &#8212; particularly refined carbohydrates.',y:'The fastest-moving lipid marker on any panel. Can drop dramatically within weeks of a clean diet.',l:'Elimination of refined carbohydrates and added sugars is the single most effective lever &#8212; the entire Kcal plate is built around it.'},alt:{s:'Liver & Organ Function',n:'ALT',f:'Alanine Aminotransferase',v:'18',u:'U/L',c:'&#8595; 14 from Day 0 (32) &#8212; Improved',w:'A liver enzyme released when liver cells are stressed or damaged.',y:'Commonly elevated by modern processed diets, alcohol, and excess fructose.',l:'Elimination of refined fructose, ultra-processed foods, and seed oils, combined with high-fibre greens, allows the liver to clear stored fat.'},ggt:{s:'Liver & Organ Function',n:'GGT',f:'Gamma-Glutamyl Transferase',v:'14',u:'U/L',c:'&#8595; 12 from Day 0 (26) &#8212; Improved',w:'A liver enzyme exquisitely sensitive to oxidative stress and liver fat accumulation.',y:'One of the most responsive markers in any nutritional intervention. Strong independent predictor of cardiovascular and metabolic risk.',l:'Cruciferous vegetables directly support the liver\'s glutathione production. The Kcal Core sachet\'s antioxidant complex adds further support.'},vitamin_d:{s:'Micronutrients, Aging & Hormones',n:'Vitamin D',f:'25-Hydroxyvitamin D',v:'118',u:'nmol/L',c:'&#8593; 46 from Day 0 (72) &#8212; Improved',w:'Serum 25-hydroxyvitamin D &#8212; the storage form of this foundational pro-hormone.',y:'Regulates immune function, bone density, cardiovascular health, and longevity pathways.',l:'Oily fish, eggs, and the Kcal Core sachet\'s vitamin D dose bring deficient clients into the optimal range within 90 days.'},vitamin_b12:{s:'Micronutrients, Aging & Hormones',n:'Vitamin B12',f:'Serum Vitamin B12 (Cobalamin)',v:'488',u:'pmol/L',c:'&#8593; 112 from Day 0 (376) &#8212; Improved',w:'Serum B12 &#8212; an essential cofactor for energy production, red blood cell formation, and methylation.',y:'Deficiency is increasingly common in plant-leaning diets, adults over 40, and people on long-term acid-suppressing medications.',l:'Lean proteins, eggs, and the Kcal Core sachet\'s methylated B12 ensure clean, bioavailable B12 intake every day.'},ferritin:{s:'Micronutrients, Aging & Hormones',n:'Ferritin',f:'Serum Ferritin',v:'88',u:'ng/mL',c:'&#8595; 4 from Day 0 (92) &#8212; Stable',w:'The stored form of iron in the body.',y:'Both extremes are problematic. Low ferritin drives systemic fatigue, poor exercise recovery, and hair loss.',l:'Iron-rich greens, lean red meat (men\'s plan), and vitamin-C-rich fruits and vegetables optimise iron status without overshooting.'},tsh:{s:'Micronutrients, Aging & Hormones',n:'TSH',f:'Thyroid Stimulating Hormone',v:'4.8',u:'mIU/L',c:'&#8593; 1.4 from Day 0 (3.4) &#8212; Outside reference range &#8212; Physician referral recommended',w:'The pituitary gland\'s signal to the thyroid &#8212; the body\'s master control on metabolic rate.',y:'Thyroid function controls metabolic rate, body composition, energy, cognition, and mood.',l:'Included as a foundational screen. An abnormal reading triggers a referral to a physician.'},igf_1:{s:'Micronutrients, Aging & Hormones',n:'IGF-1',f:'Insulin-like Growth Factor 1',v:'182',u:'ng/mL',c:'&#8593; 28 from Day 0 (154) &#8212; Improved',w:'A hormone that mediates the effects of growth hormone &#8212; a primary longevity pathway tracker.',y:'Reflects amino acid intake, protein quality, sleep depth, and overall caloric load.',l:'The 25% protein allocation across every meal, combined with the sleep-catalyst evening macro ratio, supports IGF-1 into the optimal range.'}};
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');document.querySelectorAll('.nav-item,.mobnav-item').forEach(b=>b.classList.remove('active'));const a=document.getElementById('nav-'+n),m=document.getElementById('mnav-'+n);if(a)a.classList.add('active');if(m)m.classList.add('active');}
+function openDetail(id){const d=MD[id];if(!d)return;document.getElementById('dp-sys').innerHTML=d.s;document.getElementById('dp-name').textContent=d.n;document.getElementById('dp-full').textContent=d.f;document.getElementById('dp-val').textContent=d.v;document.getElementById('dp-unit').innerHTML=d.u;document.getElementById('dp-chg').innerHTML=d.c;document.getElementById('dp-what').innerHTML=d.w;document.getElementById('dp-why').innerHTML=d.y;document.getElementById('dp-lever').innerHTML=d.l;document.getElementById('doverlay').classList.add('open');}
+function closeDet(e){if(e.target===document.getElementById('doverlay'))closeDetBtn();}
+function closeDetBtn(){document.getElementById('doverlay').classList.remove('open');}
+let us=1;function simulateUpload(){if(us>4)us=1;document.querySelectorAll('.upstep').forEach((el,i)=>{el.classList.toggle('active',i<us);});us++;}
 </script>
 </body>
 </html>
