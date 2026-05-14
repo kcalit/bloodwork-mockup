@@ -689,66 +689,349 @@ svg { display: block; flex-shrink: 0; }
 </div><!-- /phone -->
 
 <!-- ═══════════════════════════════════════
-     DETAIL BOTTOM SHEET
+     SCREEN: MARKER DETAIL (full-screen slide-in)
 ═══════════════════════════════════════ -->
-<div class="overlay" id="overlay" onclick="closeSheet(event)">
-  <div class="sheet" id="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-hdr">
-      <span class="sheet-name" id="sh-name">—</span>
-      <button class="sheet-x" onclick="closeSheetDirect()">✕</button>
+<div class="screen" id="s-detail">
+  <!-- sticky top bar -->
+  <div class="topbar" id="detail-topbar">
+    <div class="topbar-row">
+      <button class="topbar-back" onclick="go('s-dash')">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="topbar-title" id="sh-name">—</span>
+      <div style="width:40px"></div>
     </div>
-    <div class="sheet-badge-row"><span class="badge" id="sh-badge">—</span></div>
-    <div class="sheet-vals">
-      <div class="sval"><div class="sval-l">Current</div><div class="sval-n" id="sh-cur">—</div><div class="sval-u" id="sh-u1">—</div></div>
-      <div class="sval"><div class="sval-l">Day 0</div><div class="sval-n" id="sh-prev">—</div><div class="sval-u" id="sh-u2">—</div></div>
-      <div class="sval"><div class="sval-l">Change</div><div class="sval-n" id="sh-delta">—</div><div class="sval-u" id="sh-u3">—</div></div>
+    <div class="topbar-sub" id="sh-category">—</div>
+  </div>
+
+  <!-- hero value block -->
+  <div class="det-hero" id="det-hero">
+    <div class="det-hero-inner">
+      <div class="det-badge-row"><span class="badge" id="sh-badge">—</span></div>
+      <div class="det-vals">
+        <div class="det-val-block">
+          <div class="det-val-lbl">Day 90</div>
+          <div class="det-val-big" id="sh-cur">—</div>
+          <div class="det-val-unit" id="sh-u1">—</div>
+        </div>
+        <div class="det-divider"></div>
+        <div class="det-val-block">
+          <div class="det-val-lbl">Day 0</div>
+          <div class="det-val-mid" id="sh-prev">—</div>
+          <div class="det-val-unit" id="sh-u2">—</div>
+        </div>
+        <div class="det-divider"></div>
+        <div class="det-val-block">
+          <div class="det-val-lbl">Change</div>
+          <div class="det-val-mid" id="sh-delta">—</div>
+          <div class="det-val-unit" id="sh-u3">pts</div>
+        </div>
+      </div>
+      <!-- range track -->
+      <div class="det-track-wrap">
+        <div class="det-track">
+          <div class="det-opt-z" id="sh-opt-z"></div>
+          <div class="det-dot0" id="sh-dot0"></div>
+          <div class="det-dotn" id="sh-dotn"></div>
+        </div>
+        <div class="det-track-lbls">
+          <span id="sh-tl1"></span><span id="sh-tl2"></span><span id="sh-tl3"></span>
+        </div>
+        <div class="det-track-legend">
+          <span class="det-legend-item"><span class="det-legend-dot" style="background:#ccc"></span>Day 0</span>
+          <span class="det-legend-item"><span class="det-legend-dot" id="sh-legend-dot"></span>Day 90</span>
+          <span class="det-legend-item"><span class="det-legend-zone"></span>Optimal zone</span>
+        </div>
+      </div>
     </div>
-    <div class="sheet-sec"><div class="sheet-sec-t">What it measures</div><div class="sheet-body" id="sh-what"></div></div>
-    <div class="sheet-div"></div>
-    <div class="sheet-sec"><div class="sheet-sec-t">Why it matters for longevity</div><div class="sheet-body" id="sh-why"></div></div>
-    <div class="sheet-div"></div>
-    <div class="kcal-box">
-      <div class="kcal-box-hdr"><div class="kcal-dot"></div><span class="kcal-box-t">How the Kcal Longevity Plan helps</span></div>
-      <div class="kcal-box-body" id="sh-kcal"></div>
+  </div>
+
+  <!-- scrollable content -->
+  <div class="det-body">
+    <!-- What is this? -->
+    <div class="det-card">
+      <div class="det-card-icon">🔬</div>
+      <div class="det-card-content">
+        <div class="det-card-title">What is this?</div>
+        <div class="det-card-text" id="sh-what"></div>
+      </div>
+    </div>
+
+    <!-- Your result -->
+    <div class="det-card" id="sh-result-card">
+      <div class="det-card-icon">📊</div>
+      <div class="det-card-content">
+        <div class="det-card-title">What your result means</div>
+        <div class="det-card-text" id="sh-result"></div>
+      </div>
+    </div>
+
+    <!-- Why it matters -->
+    <div class="det-card">
+      <div class="det-card-icon">⏳</div>
+      <div class="det-card-content">
+        <div class="det-card-title">Why it matters for longevity</div>
+        <div class="det-card-text" id="sh-why"></div>
+      </div>
+    </div>
+
+    <!-- Kcal plan impact -->
+    <div class="det-kcal-box">
+      <div class="det-kcal-hdr">
+        <div class="det-kcal-logo">kcal</div>
+        <span class="det-kcal-title">How the Kcal Longevity Plan helps</span>
+      </div>
+      <div class="det-card-text" id="sh-kcal"></div>
+    </div>
+
+    <!-- alert if needed -->
+    <div class="det-alert" id="sh-alert" style="display:none">
+      <span>⚠</span>
+      <span id="sh-alert-text"></span>
     </div>
   </div>
 </div>
 
+<style>
+/* ─────────────────────────────────────────
+   DETAIL SCREEN STYLES
+───────────────────────────────────────── */
+#s-detail { background: var(--bg); }
+
+.det-hero {
+  background: linear-gradient(160deg, var(--g) 0%, var(--g3) 100%);
+  padding: 20px 18px 24px;
+  flex-shrink: 0;
+}
+.det-hero-inner { display: flex; flex-direction: column; gap: 14px; }
+.det-badge-row { display: flex; }
+.det-vals {
+  display: flex; align-items: stretch; gap: 0;
+  background: rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;
+}
+.det-val-block {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 14px 8px; gap: 3px;
+}
+.det-divider { width: 1px; background: rgba(255,255,255,.12); margin: 12px 0; }
+.det-val-lbl { font-size: 9px; font-weight: 800; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .6px; }
+.det-val-big { font-size: 36px; font-weight: 900; color: var(--white); line-height: 1; }
+.det-val-mid { font-size: 26px; font-weight: 800; color: rgba(255,255,255,.75); line-height: 1; }
+.det-val-unit { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.45); }
+
+.det-track-wrap { display: flex; flex-direction: column; gap: 6px; }
+.det-track {
+  height: 8px; background: rgba(255,255,255,.15); border-radius: 4px;
+  position: relative;
+}
+.det-opt-z { position: absolute; top: 0; height: 100%; background: rgba(163,218,214,.5); border-radius: 4px; }
+.det-dot0 {
+  position: absolute; top: -5px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,.35); border: 2px solid rgba(255,255,255,.6);
+  transform: translateX(-50%);
+}
+.det-dotn {
+  position: absolute; top: -5px;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--white);
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 3px rgba(163,218,214,.3);
+}
+.det-track-lbls {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: rgba(255,255,255,.45); font-weight: 600;
+}
+.det-track-legend {
+  display: flex; gap: 14px; justify-content: center;
+  font-size: 10px; color: rgba(255,255,255,.5); font-weight: 600;
+}
+.det-legend-item { display: flex; align-items: center; gap: 5px; }
+.det-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.det-legend-zone { width: 18px; height: 8px; border-radius: 3px; background: rgba(163,218,214,.5); }
+
+.det-body { padding: 16px 14px 100px; display: flex; flex-direction: column; gap: 10px; }
+
+.det-card {
+  background: var(--card); border-radius: var(--rs);
+  border: 1px solid var(--divider); box-shadow: var(--sh);
+  padding: 16px; display: flex; gap: 12px; align-items: flex-start;
+}
+.det-card-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.det-card-content { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.det-card-title { font-size: 11px; font-weight: 900; color: var(--g); text-transform: uppercase; letter-spacing: .6px; }
+.det-card-text { font-size: 14px; font-weight: 600; color: var(--t2); line-height: 1.6; }
+
+.det-kcal-box {
+  background: linear-gradient(135deg, var(--g) 0%, var(--g3) 100%);
+  border-radius: var(--rs); padding: 18px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.det-kcal-hdr { display: flex; align-items: center; gap: 10px; }
+.det-kcal-logo {
+  background: var(--mint); color: var(--g);
+  font-size: 10px; font-weight: 900; padding: 4px 9px;
+  border-radius: 8px; letter-spacing: .5px;
+}
+.det-kcal-title { font-size: 12px; font-weight: 900; color: var(--white); }
+.det-kcal-box .det-card-text { color: rgba(255,255,255,.82); }
+
+.det-alert {
+  background: var(--warn-bg); border: 1px solid var(--warn-b);
+  border-radius: var(--rs); padding: 14px 16px;
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; font-weight: 700; color: var(--warn); line-height: 1.5;
+}
+</style>
+
 <script>
 const DATA = {
   glucose:{ name:'Fasting Glucose', unit:'mg/dL', cur:84, prev:92, delta:'−8', ok:true,
-    what:'Fasting glucose measures the amount of sugar in your blood after an overnight fast. It reflects how well your body regulates blood sugar when you haven\'t eaten.',
+    category:'Metabolic & Glycemic',
+    optL:20, optR:56, trackMin:60, trackMax:130,
+    dot0Pct:67, dotNPct:55,
+    what:'Fasting glucose measures the amount of sugar in your blood after an overnight fast — basically how well your body manages blood sugar when you haven\'t eaten anything. Think of it as your body\'s baseline fuel gauge.',
+    result:'Your fasting glucose is 84 mg/dL — down 8 points from Day 0 and firmly in the longevity-optimal range (70–90 mg/dL). This is an excellent result.',
     why:'Chronically elevated glucose accelerates cellular ageing, damages blood vessels, and is the primary driver of type 2 diabetes. Keeping glucose in the longevity range (70–90 mg/dL) is one of the most powerful things you can do for long-term health.',
     kcal:'The Kcal Longevity Plan uses low-glycaemic index meals timed to your activity pattern, reducing glucose spikes after eating. Your 90-day result shows an 8-point improvement — a clinically meaningful reduction.' },
   hba1c:{ name:'HbA1c', unit:'%', cur:5.2, prev:5.5, delta:'−0.3', ok:true,
-    what:'HbA1c (glycated haemoglobin) reflects your average blood sugar levels over the past 2–3 months. It\'s a long-term snapshot of glucose control.',
+    category:'Metabolic & Glycemic',
+    optL:0, optR:40, trackMin:4.5, trackMax:7.0,
+    dot0Pct:57, dotNPct:37,
+    what:'HbA1c (glycated haemoglobin) is like a 3-month average of your blood sugar. When sugar attaches to your red blood cells, it stays there for the life of the cell. So this test tells you how your glucose has been behaving — not just today, but over the past 90 days.',
+    result:'Your HbA1c is 5.2% — down 0.3% from Day 0 and in the longevity-optimal range (under 5.4%). This is a meaningful improvement in your long-term glucose control.',
     why:'Even small increases in HbA1c above 5.4% are linked to accelerated biological ageing. Keeping it below 5.4% is associated with significantly lower risk of cardiovascular disease, dementia, and metabolic dysfunction.',
     kcal:'The Kcal plan\'s consistent low-glycaemic meals, combined with your tracked calorie burn from your wearable, have produced a 0.3% reduction — bringing you firmly into the longevity-optimal range.' },
   insulin:{ name:'Fasting Insulin', unit:'µIU/mL', cur:6.1, prev:8.5, delta:'−2.4', ok:true,
-    what:'Fasting insulin measures how much insulin your pancreas is producing when you haven\'t eaten. High levels indicate your cells are becoming resistant to insulin\'s signal.',
+    category:'Metabolic & Glycemic',
+    optL:0, optR:40, trackMin:0, trackMax:20,
+    dot0Pct:50, dotNPct:35,
+    what:'Fasting insulin measures how much insulin your pancreas is pumping out when you haven\'t eaten. Insulin is the key that unlocks your cells to let glucose in. When cells stop responding well, the pancreas has to produce more and more — that\'s insulin resistance.',
+    result:'Your fasting insulin is 6.1 µIU/mL — down 2.4 points from Day 0 and well within the longevity-optimal range (under 8 µIU/mL). This is a 28% reduction — one of your best improvements.',
     why:'Insulin resistance is the root cause of metabolic syndrome, type 2 diabetes, and a major driver of weight gain and inflammation. Keeping fasting insulin below 8 is a longevity cornerstone.',
     kcal:'The Kcal plan\'s fibre-rich, protein-forward meals reduce the insulin demand after every meal. Over 90 days, your fasting insulin dropped by 2.4 points — a 28% reduction that directly improves your HOMA-IR score.' },
   trig:{ name:'Triglycerides', unit:'mg/dL', cur:88, prev:110, delta:'−22', ok:true,
-    what:'Triglycerides are fats circulating in your blood. They rise when you consume more calories than you burn, especially from refined carbohydrates and sugar.',
+    category:'Lipids & Cardiovascular',
+    optL:0, optR:33, trackMin:0, trackMax:300,
+    dot0Pct:44, dotNPct:35,
+    what:'Triglycerides are fats floating in your bloodstream. Your body makes them from excess calories — especially from sugar and refined carbs — and stores them as body fat. High levels mean your body is getting more fuel than it can use.',
+    result:'Your triglycerides are 88 mg/dL — down 22 points from Day 0 and in the longevity-optimal range (under 100 mg/dL). This is a significant improvement in your cardiovascular and metabolic health.',
     why:'Elevated triglycerides are a direct cardiovascular risk factor and a marker of metabolic dysfunction. The longevity target of under 100 mg/dL is significantly lower than the standard clinical threshold.',
     kcal:'Your 22-point reduction reflects the combined effect of the Kcal plan\'s reduced refined carbohydrate content and your improved calorie balance tracked through your Apple Watch integration.' },
   ldl:{ name:'LDL Cholesterol', unit:'mg/dL', cur:92, prev:106, delta:'−14', ok:true,
-    what:'LDL (low-density lipoprotein) carries cholesterol to cells. When elevated, it can deposit in artery walls, forming plaques that lead to heart disease and stroke.',
+    category:'Lipids & Cardiovascular',
+    optL:0, optR:40, trackMin:40, trackMax:200,
+    dot0Pct:52, dotNPct:45,
+    what:'LDL (low-density lipoprotein) is often called the "bad" cholesterol. Think of it as delivery trucks carrying cholesterol through your blood. Too many trucks, and some start crashing into artery walls — building up plaques that can cause heart attacks and strokes.',
+    result:'Your LDL is 92 mg/dL — down 14 points from Day 0 and in the longevity-optimal range (under 100 mg/dL). This is a clinically significant improvement.',
     why:'The longevity target of under 100 mg/dL is more aggressive than standard guidelines. Research shows that lower LDL throughout life significantly reduces cardiovascular events and extends healthspan.',
     kcal:'The Kcal plan\'s heart-healthy fat profile — rich in olive oil, oily fish, and nuts — directly reduces LDL. Your 14-point drop in 90 days is clinically significant.' },
   hdl:{ name:'HDL Cholesterol', unit:'mg/dL', cur:68, prev:62, delta:'+6', ok:true,
-    what:'HDL (high-density lipoprotein) is the "good" cholesterol — it removes excess cholesterol from the bloodstream and transports it to the liver for disposal.',
+    category:'Lipids & Cardiovascular',
+    optL:50, optR:100, trackMin:20, trackMax:120,
+    dot0Pct:42, dotNPct:48,
+    what:'HDL (high-density lipoprotein) is the "good" cholesterol — think of it as the clean-up crew. It picks up excess cholesterol from your arteries and carries it back to the liver to be disposed of. More HDL means a cleaner cardiovascular system.',
+    result:'Your HDL is 68 mg/dL — up 6 points from Day 0 and well above the longevity target (above 60 mg/dL). Higher is better here, and you\'re in excellent shape.',
     why:'Higher HDL is strongly protective against cardiovascular disease. The longevity target of above 60 mg/dL is associated with significantly lower heart attack and stroke risk.',
     kcal:'Regular physical activity (tracked via your wearable) and the Kcal plan\'s healthy fat intake are the two most powerful drivers of HDL. Your 6-point increase reflects both.' },
   hscrp:{ name:'hs-CRP', unit:'mg/L', cur:2.1, prev:1.7, delta:'+0.4', ok:false,
-    what:'High-sensitivity C-reactive protein (hs-CRP) is a marker of systemic inflammation. It rises in response to infection, injury, or chronic low-grade inflammation.',
+    category:'Lipids & Cardiovascular',
+    optL:0, optR:20, trackMin:0, trackMax:5,
+    dot0Pct:34, dotNPct:42,
+    alert:'hs-CRP has risen this cycle. The Kcal team will review your plan and a physician consultation is recommended.',
+    what:'hs-CRP (high-sensitivity C-reactive protein) is a fire alarm for inflammation in your body. When something is inflamed — whether from infection, stress, poor diet, or chronic disease — your liver releases CRP into the bloodstream. This test is sensitive enough to detect even low-grade smouldering inflammation.',
+    result:'Your hs-CRP is 2.1 mg/L — up 0.4 from Day 0 and above the longevity target (under 1.0 mg/L). This is the one marker that needs attention this cycle.',
     why:'Chronic inflammation is a root driver of nearly every age-related disease — heart disease, cancer, Alzheimer\'s, and metabolic dysfunction. The longevity target is below 1.0 mg/L.',
     kcal:'Your hs-CRP has risen slightly this cycle. The Kcal team will review your meal plan to increase anti-inflammatory foods (omega-3s, polyphenols, leafy greens). A physician review is recommended given the current level.' },
   vitd:{ name:'Vitamin D3', unit:'ng/mL', cur:62, prev:44, delta:'+18', ok:true,
-    what:'Vitamin D3 is a fat-soluble vitamin that acts as a hormone in the body, regulating hundreds of genes involved in immune function, bone health, and cellular repair.',
-    why:'Vitamin D deficiency is associated with accelerated ageing, increased cancer risk, poor immune function, and cardiovascular disease. The longevity target of 50–80 ng/mL is significantly higher than the standard clinical minimum.',
-    kcal:'The Kcal plan includes Vitamin D-rich foods and recommends targeted supplementation based on your baseline levels. Your 18-point improvement brings you firmly into the longevity-optimal range.' }
+    category:'Micronutrients & Hormones',
+    optL:40, optR:70, trackMin:10, trackMax:100,
+    dot0Pct:38, dotNPct:57,
+    what:'Vitamin D3 is a fat-soluble vitamin that acts more like a hormone in your body. It controls hundreds of genes and is essential for your immune system, bone strength, mood, and cellular repair.',
+    result:'Your Vitamin D is 62 ng/mL — up 18 points from Day 0. You are now in the longevity-optimal range (50–80 ng/mL). This is a significant improvement.',
+    why:'Low Vitamin D is linked to accelerated ageing, increased cancer risk, poor immunity, and cardiovascular disease. Most people are deficient without knowing it. The longevity target of 50–80 ng/mL is much higher than the standard clinical minimum.',
+    kcal:'The Kcal plan includes Vitamin D-rich foods and targeted supplementation based on your baseline. Your 18-point improvement in 90 days brings you firmly into the longevity-optimal range — one of the biggest wins of your plan.' },
+  magnesium:{ name:'Magnesium', unit:'mg/dL', cur:2.2, prev:1.9, delta:'+0.3', ok:true,
+    category:'Micronutrients & Hormones',
+    optL:33, optR:67, trackMin:1.2, trackMax:3.0,
+    dot0Pct:30, dotNPct:42,
+    what:'Magnesium is a mineral involved in over 300 enzymatic reactions in your body — from energy production and muscle function to sleep quality and stress regulation.',
+    result:'Your magnesium is 2.2 mg/dL — up 0.3 from Day 0 and now within the longevity-optimal range (2.0–2.5 mg/dL). Your cells are better fuelled for repair and recovery.',
+    why:'Magnesium deficiency is extremely common and linked to poor sleep, muscle cramps, anxiety, insulin resistance, and cardiovascular disease. Optimal levels support mitochondrial function — the engine of cellular longevity.',
+    kcal:'The Kcal plan is rich in magnesium-dense foods — leafy greens, nuts, seeds, and legumes. Your 0.3-point improvement reflects consistent dietary intake over 90 days.' },
+  testosterone:{ name:'Free Testosterone', unit:'pg/mL', cur:18.4, prev:17.8, delta:'+0.6', ok:true,
+    category:'Micronutrients & Hormones',
+    optL:40, optR:70, trackMin:5, trackMax:40,
+    dot0Pct:47, dotNPct:49,
+    what:'Free testosterone is the biologically active form of testosterone — the portion not bound to proteins and available for your cells to use. It drives energy, muscle mass, libido, and mood.',
+    result:'Your free testosterone is 18.4 pg/mL — up slightly from 17.8 at Day 0 and within the longevity-optimal range (15–25 pg/mL). This is a stable, healthy result.',
+    why:'Declining testosterone with age is linked to muscle loss, fatigue, poor mood, and increased metabolic risk. Maintaining optimal levels through lifestyle — not medication — is a key longevity strategy.',
+    kcal:'The Kcal plan supports healthy testosterone through adequate dietary fat (essential for hormone synthesis), zinc-rich foods, and calorie balance. Your wearable data also shows improved sleep quality — a major driver of testosterone production.' },
+  tsh:{ name:'TSH', unit:'mIU/L', cur:4.8, prev:3.6, delta:'+1.2', ok:false,
+    category:'Micronutrients & Hormones',
+    optL:10, optR:34, trackMin:0, trackMax:6,
+    dot0Pct:56, dotNPct:76,
+    alert:'TSH is above the clinical reference range. The Kcal team recommends a physician consultation before your next cycle.',
+    what:'TSH (thyroid-stimulating hormone) is produced by your brain to tell your thyroid gland how much thyroid hormone to make. When TSH is high, it usually means your thyroid is underactive.',
+    result:'Your TSH is 4.8 mIU/L — above both the clinical range (0.5–4.5) and the longevity target (0.5–2.5). It has increased by 1.2 points since Day 0. A physician consultation is recommended.',
+    why:'The thyroid controls your metabolism, energy, body temperature, heart rate, and mood. Suboptimal thyroid function accelerates fatigue, weight gain, cognitive decline, and cardiovascular risk — all of which undermine longevity.',
+    kcal:'While the Kcal plan supports thyroid health through iodine and selenium-rich foods, a TSH at this level requires medical evaluation. The Kcal team will flag this for your physician and adjust your plan accordingly.' },
+  egfr:{ name:'eGFR', unit:'mL/min', cur:94, prev:93, delta:'+1', ok:true,
+    category:'Metabolic & Glycemic',
+    optL:60, optR:100, trackMin:30, trackMax:120,
+    dot0Pct:62, dotNPct:63,
+    what:'eGFR (estimated glomerular filtration rate) measures how well your kidneys are filtering waste from your blood. Think of it as your kidney efficiency score — higher is better.',
+    result:'Your eGFR is 94 mL/min — stable and well within the healthy range (above 90). Your kidneys are functioning optimally.',
+    why:'Kidney function naturally declines with age. Maintaining eGFR above 90 is associated with lower risk of cardiovascular disease, better toxin clearance, and longer healthspan. Even modest declines below 60 significantly increase mortality risk.',
+    kcal:'The Kcal plan supports kidney health through adequate hydration, reduced sodium, and anti-inflammatory foods. Your stable result confirms your kidneys are handling the dietary changes well.' },
+  alt:{ name:'ALT', unit:'U/L', cur:22, prev:30, delta:'−8', ok:true,
+    category:'Liver & Organ Function',
+    optL:0, optR:31, trackMin:0, trackMax:80,
+    dot0Pct:44, dotNPct:28,
+    what:'ALT (alanine aminotransferase) is an enzyme found mainly in your liver. When liver cells are damaged or inflamed, ALT leaks into the bloodstream. It is the most sensitive marker of liver stress.',
+    result:'Your ALT is 22 U/L — down 8 points from Day 0 and now within the longevity-optimal range (under 25 U/L). Your liver is less stressed than it was 90 days ago.',
+    why:'Elevated ALT is an early warning sign of fatty liver disease, which affects 1 in 4 adults and dramatically increases risk of diabetes, heart disease, and liver failure. Keeping ALT low is a key longevity marker.',
+    kcal:'The Kcal plan's reduced sugar, refined carbohydrate, and alcohol content directly reduces liver fat. Your 8-point improvement in 90 days is a meaningful sign of liver recovery.' },
+  ast:{ name:'AST', unit:'U/L', cur:24, prev:25, delta:'−1', ok:true,
+    category:'Liver & Organ Function',
+    optL:0, optR:31, trackMin:0, trackMax:80,
+    dot0Pct:32, dotNPct:30,
+    what:'AST (aspartate aminotransferase) is an enzyme found in your liver, heart, and muscles. Elevated levels can indicate liver damage, but it is less specific than ALT.',
+    result:'Your AST is 24 U/L — down slightly from 25 at Day 0 and within the optimal range (under 25 U/L). This is a stable, healthy result.',
+    why:'While less specific than ALT, AST is used alongside it to assess liver health. The AST:ALT ratio also helps distinguish between different types of liver stress. Keeping both in range is a longevity priority.',
+    kcal:'Your stable AST reflects consistent liver health throughout the plan. The Kcal plan's whole-food, low-toxin approach keeps liver enzyme load low.' },
+  ggt:{ name:'GGT', unit:'U/L', cur:17, prev:23, delta:'−6', ok:true,
+    category:'Liver & Organ Function',
+    optL:0, optR:33, trackMin:0, trackMax:60,
+    dot0Pct:45, dotNPct:28,
+    what:'GGT (gamma-glutamyl transferase) is a liver enzyme that is particularly sensitive to alcohol intake, oxidative stress, and bile duct problems. It is one of the earliest markers to rise when the liver is under stress.',
+    result:'Your GGT is 17 U/L — down 6 points from Day 0 and well within the longevity-optimal range (under 20 U/L). Your liver oxidative stress has reduced significantly.',
+    why:'Elevated GGT is a powerful predictor of cardiovascular disease, diabetes, and all-cause mortality — even within the so-called normal range. The longevity target of under 20 U/L is more aggressive than standard guidelines.',
+    kcal:'GGT is highly responsive to dietary changes. The Kcal plan's reduction in processed foods, refined sugars, and alcohol-equivalent dietary stressors has driven your 6-point improvement in just 90 days.' },
+  uricacid:{ name:'Uric Acid', unit:'mg/dL', cur:5.2, prev:5.3, delta:'−0.1', ok:true,
+    category:'Liver & Organ Function',
+    optL:0, optR:55, trackMin:2, trackMax:10,
+    dot0Pct:54, dotNPct:52,
+    what:'Uric acid is a waste product formed when your body breaks down purines — compounds found in certain foods and produced naturally by cells. It is filtered by the kidneys and excreted in urine.',
+    result:'Your uric acid is 5.2 mg/dL — stable and within the longevity-optimal range (under 5.5 mg/dL). This is a good result.',
+    why:'Elevated uric acid causes gout, but more importantly it is a marker of metabolic dysfunction, fructose overload, and kidney stress. High levels are linked to hypertension, insulin resistance, and cardiovascular disease.',
+    kcal:'The Kcal plan limits high-fructose foods and refined sugars — the primary dietary drivers of uric acid elevation. Your stable result confirms your plan is keeping uric acid in check.' },
+  totalchol:{ name:'Total Cholesterol', unit:'mg/dL', cur:174, prev:177, delta:'−3', ok:true,
+    category:'Lipids & Cardiovascular',
+    optL:0, optR:45, trackMin:100, trackMax:300,
+    dot0Pct:47, dotNPct:44,
+    what:'Total cholesterol is the sum of all cholesterol types in your blood — LDL, HDL, VLDL, and others. On its own it is a blunt measure, but in context with other markers it helps complete the cardiovascular picture.',
+    result:'Your total cholesterol is 174 mg/dL — down slightly from 177 at Day 0 and within the longevity-optimal range (under 180 mg/dL). This is a stable, healthy result.',
+    why:'While total cholesterol alone is not the best predictor of cardiovascular risk, keeping it under 180 mg/dL — especially when LDL and ApoB are also optimised — is associated with lower long-term cardiovascular risk.',
+    kcal:'The Kcal plan's heart-healthy fat profile has contributed to a modest reduction in total cholesterol. The more meaningful improvements are in your LDL (−14) and ApoB (−9), which are better predictors of risk.' },
+  apob:{ name:'ApoB', unit:'mg/dL', cur:74, prev:83, delta:'−9', ok:true,
+    category:'Lipids & Cardiovascular',
+    optL:0, optR:40, trackMin:40, trackMax:160,
+    dot0Pct:52, dotNPct:37,
+    what:'ApoB (apolipoprotein B) is a protein that coats every atherogenic (artery-clogging) particle in your blood — LDL, VLDL, IDL, and Lp(a). It is considered the most accurate single measure of cardiovascular risk.',
+    result:'Your ApoB is 74 mg/dL — down 9 points from Day 0 and within the longevity-optimal range (under 80 mg/dL). This is one of your most important improvements this cycle.',
+    why:'ApoB directly counts the number of dangerous particles that can embed in artery walls. Research shows it is a better predictor of heart attack and stroke than LDL alone. The longevity target of under 80 mg/dL is more aggressive than standard guidelines.',
+    kcal:'The Kcal plan's reduction in saturated fat and refined carbohydrates, combined with increased omega-3 intake, directly reduces ApoB particle count. Your 9-point drop in 90 days is clinically meaningful.' }
 };
 
 function go(id) {
@@ -757,29 +1040,56 @@ function go(id) {
   document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
   if (id === 's-dash') { document.getElementById('ntab-panel').classList.add('on'); }
   if (id === 's-compare') { document.getElementById('ntab-compare').classList.add('on'); }
-  document.querySelector('.screen.active').scrollTop = 0;
+  if (id !== 's-detail') {
+    const s = document.querySelector('.screen.active');
+    if (s) s.scrollTop = 0;
+  }
 }
-function goBack() { go('s-dash'); }
 
 function detail(key) {
   const d = DATA[key]; if (!d) return;
+  // populate text
   document.getElementById('sh-name').textContent = d.name;
+  document.getElementById('sh-category').textContent = d.category || '';
   document.getElementById('sh-cur').textContent = d.cur;
   document.getElementById('sh-prev').textContent = d.prev;
   document.getElementById('sh-delta').textContent = d.delta;
-  document.getElementById('sh-delta').style.color = d.ok ? 'var(--ok)' : 'var(--warn)';
-  ['sh-u1','sh-u2','sh-u3'].forEach(id => document.getElementById(id).textContent = d.unit);
+  document.getElementById('sh-delta').style.color = d.ok ? 'var(--mint)' : '#ffb3a7';
+  ['sh-u1','sh-u2'].forEach(id => document.getElementById(id).textContent = d.unit);
+  document.getElementById('sh-u3').textContent = d.unit;
+  // badge
   const b = document.getElementById('sh-badge');
-  b.textContent = d.ok ? 'Within Longevity Target' : 'Outside Longevity Target';
+  b.textContent = d.ok ? '✓ Within Longevity Target' : '⚠ Outside Longevity Target';
   b.className = 'badge ' + (d.ok ? 'bi' : 'br');
+  // track
+  if (d.optL !== undefined) {
+    document.getElementById('sh-opt-z').style.left = d.optL + '%';
+    document.getElementById('sh-opt-z').style.width = (d.optR - d.optL) + '%';
+    document.getElementById('sh-dot0').style.left = d.dot0Pct + '%';
+    document.getElementById('sh-dotn').style.left = d.dotNPct + '%';
+    document.getElementById('sh-dotn').style.background = d.ok ? 'var(--mint)' : '#ff8a75';
+    document.getElementById('sh-legend-dot').style.background = d.ok ? 'var(--mint)' : '#ff8a75';
+    document.getElementById('sh-tl1').textContent = d.trackMin;
+    document.getElementById('sh-tl2').textContent = 'Optimal';
+    document.getElementById('sh-tl3').textContent = d.trackMax;
+  }
+  // copy
   document.getElementById('sh-what').textContent = d.what;
+  document.getElementById('sh-result').textContent = d.result || '';
   document.getElementById('sh-why').textContent = d.why;
   document.getElementById('sh-kcal').textContent = d.kcal;
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('sheet').scrollTop = 0;
+  // alert
+  const alertEl = document.getElementById('sh-alert');
+  if (d.alert) {
+    alertEl.style.display = 'flex';
+    document.getElementById('sh-alert-text').textContent = d.alert;
+  } else {
+    alertEl.style.display = 'none';
+  }
+  // navigate
+  go('s-detail');
+  document.getElementById('s-detail').scrollTop = 0;
 }
-function closeSheet(e) { if (e.target === document.getElementById('overlay')) closeSheetDirect(); }
-function closeSheetDirect() { document.getElementById('overlay').classList.remove('open'); }
 </script>
 </body>
 </html>
